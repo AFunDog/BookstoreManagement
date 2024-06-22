@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" ?>
+<Page
+    x:Class="书店管理系统.Views.AdminLoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:书店管理系统.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical"
+            Spacing="16">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    MinWidth="128"
+                    VerticalAlignment="Center"
+                    Text="管理员密码"
+                    TextAlignment="Center" />
+                <PasswordBox MinWidth="256" />
+            </StackPanel>
+            <Button HorizontalAlignment="Center" Content="管理员登录" />
+        </StackPanel>
+        <Button
+            x:Name="BackToButton"
+            Margin="16,0,0,16"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Command="{x:Bind ViewModel.BackToCommand}">
+            <FontIcon Glyph="&#xE72B;" />
+        </Button>
+    </Grid>
+
+</Page>

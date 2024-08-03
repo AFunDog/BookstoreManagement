@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -22,11 +23,11 @@ namespace 书店管理系统.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class UserLoginPage : Page
+    public sealed partial class AdminMainPage : Page
     {
-        public UserLoginViewModel ViewModel { get; set; } = App.GetService<UserLoginViewModel>();
+        internal AdminMainViewModel ViewModel { get; set; } = App.GetService<AdminMainViewModel>();
 
-        public UserLoginPage()
+        public AdminMainPage()
         {
             this.InitializeComponent();
         }

@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using 书店管理系统.Core.Contracts;
 using 书店管理系统.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -22,13 +23,27 @@ namespace 书店管理系统.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class UserLoginPage : Page
+    public sealed partial class AdminUserManagePage : Page
     {
-        public UserLoginViewModel ViewModel { get; set; } = App.GetService<UserLoginViewModel>();
+        public AdminUserManageViewModel ViewModel { get; set; } = App.GetService<AdminUserManageViewModel>();
 
-        public UserLoginPage()
+        public AdminUserManagePage()
         {
             this.InitializeComponent();
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            App.GetService<IUserDataProvider>().SaveUserDatas();
+        }
+
+        private void OnItemPointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            UIElement source = (UIElement)sender;
+            if (e.GetCurrentPoint(source).Properties.IsRightButtonPressed)
+            {
+                userDataCommondFlyout.ShowAt(source, e.GetCurrentPoint(source).Position);
+            }
         }
     }
 }

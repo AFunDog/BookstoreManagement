@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace 书店管理系统.Behaviors
 {
+    /// <summary>
+    /// 让用户在输入完成密码按下回车后可以执行登录按钮的操作
+    /// </summary>
     public class PasswordBoxKeyBehavior : Behavior<PasswordBox>
     {
         public Button TargetButton { get; set; }
@@ -27,7 +30,7 @@ namespace 书店管理系统.Behaviors
                 return;
             }
 
-            if (e.Key == global::Windows.System.VirtualKey.Enter && TargetButton.Command.CanExecute(null))
+            if (e.Key == global::Windows.System.VirtualKey.Enter && !string.IsNullOrEmpty(AssociatedObject.Password) && TargetButton.Command.CanExecute(null))
             {
                 TargetButton.Command.Execute(null);
             }

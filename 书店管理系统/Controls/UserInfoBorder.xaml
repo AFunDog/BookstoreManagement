@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" ?>
+<UserControl
+    x:Class="书店管理系统.Controls.UserInfoBorder"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:书店管理系统.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    CornerRadius="{ThemeResource ControlCornerRadius}"
+    Translation="0,0,48"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="InfoCardStyle" TargetType="ContentControl">
+            <Setter Property="IsFocusEngaged" Value="False" />
+            <Setter Property="MinWidth" Value="256" />
+            <Setter Property="MinHeight" Value="48" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            Child="{TemplateBinding Content}"
+                            CornerRadius="{TemplateBinding CornerRadius}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <UserControl.Shadow>
+        <ThemeShadow />
+    </UserControl.Shadow>
+    <UserControl.Background>
+        <LinearGradientBrush Opacity="0.8" StartPoint="0,0" EndPoint="1,1">
+            <LinearGradientBrush.GradientStops>
+                <GradientStopCollection>
+                    <GradientStop Offset="0" Color="MediumPurple" />
+                    <GradientStop Offset="1" Color="CornflowerBlue" />
+                </GradientStopCollection>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+    </UserControl.Background>
+    <Grid
+        Width="{x:Bind Width, Mode=OneWay}"
+        Height="{x:Bind Height, Mode=OneWay}"
+        Background="{x:Bind Background, Mode=OneWay}"
+        CornerRadius="{x:Bind CornerRadius, Mode=OneWay}">
+        <StackPanel
+            Margin="16"
+            Orientation="Vertical"
+            Spacing="8">
+            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="用户信息仪表盘" />
+            <GridView
+                IsFocusEngaged="False"
+                IsItemClickEnabled="False"
+                SelectionMode="None">
+                <GridView.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
+                        <Setter Property="Padding" Value="4" />
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid HorizontalAlignment="Center" Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <ContentControl Background="{ThemeResource LayerFillColorDefaultBrush}" Style="{ThemeResource InfoCardStyle}">
+                    <Grid VerticalAlignment="Center">
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                            Text="用户数量"
+                            TextLineBounds="Tight" />
+                        <TextBlock
+                            HorizontalAlignment="Right"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"
+                            Text="{x:Bind UserDatas.Count, Mode=OneWay}"
+                            TextLineBounds="Tight" />
+                    </Grid>
+                </ContentControl>
+                <ContentControl Background="{ThemeResource LayerFillColorDefaultBrush}" Style="{ThemeResource InfoCardStyle}">
+                    <Grid VerticalAlignment="Center">
+                        <TextBlock />
+                    </Grid>
+                </ContentControl>
+                <ContentControl Background="{ThemeResource LayerFillColorDefaultBrush}" Style="{ThemeResource InfoCardStyle}" />
+            </GridView>
+        </StackPanel>
+    </Grid>
+</UserControl>

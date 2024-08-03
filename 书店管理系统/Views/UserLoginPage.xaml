@@ -9,7 +9,6 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:书店管理系统.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -29,6 +28,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock MinWidth="128" Text="用户名" />
                 <TextBox MinWidth="256" Text="{x:Bind ViewModel.UserName, Mode=TwoWay}">
+
                     <i:Interaction.Behaviors>
                         <behaviors:UserNameTextBoxKeyBehavior Next="{x:Bind PasswordBox}" />
                     </i:Interaction.Behaviors>

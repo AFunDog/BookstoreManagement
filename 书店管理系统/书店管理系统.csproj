@@ -17,21 +17,39 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Controls\ContentDialog\**" />
+	  <EmbeddedResource Remove="Controls\ContentDialog\**" />
+	  <None Remove="Controls\ContentDialog\**" />
+	  <Page Remove="Controls\ContentDialog\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Controls\ContentDialogs\AffirmRemoveBookContentDialog.xaml" />
+	  <None Remove="Controls\ContentDialogs\AffirmRemoveUserContentDialog.xaml" />
+	  <None Remove="Controls\ContentDialogs\EditBookDataContentDialog.xaml" />
+	  <None Remove="Controls\ISBNInputControl.xaml" />
+	  <None Remove="Controls\RegisterUserContentDialog.xaml" />
+	  <None Remove="Controls\UserInfoBorder.xaml" />
+	  <None Remove="Views\AdminBookManagePage.xaml" />
 	  <None Remove="Views\AdminLoginPage.xaml" />
+	  <None Remove="Views\AdminMainPage.xaml" />
+	  <None Remove="Views\AdminUserManagePage.xaml" />
 	  <None Remove="Views\LoadingPage.xaml" />
 	  <None Remove="Views\UserLoginPage.xaml" />
+	  <None Remove="Views\UserMainPage.xaml" />
 	  <None Remove="Windows\LoginWindow.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.0.240109" />
-		<PackageReference Include="CoreServicesPackage" Version="1.0.46" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240607001" />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
+		<PackageReference Include="Serilog" Version="4.0.1" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
 		<PackageReference Include="WinUIEx" Version="2.3.4" />
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
@@ -47,8 +65,14 @@
 	<ItemGroup>
 	  <Folder Include="Assets\" />
 	  <Folder Include="Helpers\" />
+	  <Folder Include="Structs\" />
+	  <Folder Include="UserControls\" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Page Update="Controls\ContentDialogs\AffirmRemoveBookContentDialog.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
 	  <Page Update="Views\UserLoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
@@ -77,5 +101,60 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Resource Remove="Views\AdminLoginPage.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\CoreServices\CoreServices.WinUI\CoreServices.WinUI.csproj" />
+	  <ProjectReference Include="..\..\CoreServices\CoreServices\CoreServices.csproj" />
+	  <ProjectReference Include="..\书店管理系统.Core\书店管理系统.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Controls\UserInfoBorder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\AdminMainPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\UserMainPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <CustomAdditionalCompileInputs Remove="Views\AdminUserManagePage.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Resource Remove="Views\AdminUserManagePage.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <CustomAdditionalCompileInputs Remove="Controls\RegisterUserContentDialog.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Resource Remove="Controls\RegisterUserContentDialog.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PRIResource Remove="Controls\ContentDialog\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Controls\ISBNInputControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Controls\ContentDialogs\EditBookDataContentDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\AdminBookManagePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Controls\ContentDialogs\AffirmRemoveUserContentDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 </Project>

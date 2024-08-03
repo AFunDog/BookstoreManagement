@@ -1,10 +1,11 @@
-﻿{
+{
   "profiles": {
     "书店管理系统 (Package)": {
       "commandName": "MsixPackage"
     },
     "书店管理系统 (Unpackaged)": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "nativeDebugging": false
     }
   }
 }

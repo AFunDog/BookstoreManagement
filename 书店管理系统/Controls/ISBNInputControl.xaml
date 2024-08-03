@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" ?>
+<UserControl
+    x:Class="书店管理系统.Controls.ISBNInputControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:书店管理系统.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="using:System"
+    mc:Ignorable="d">
+
+    <StackPanel
+        VerticalAlignment="Stretch"
+        Orientation="Vertical"
+        Spacing="8">
+        <TextBlock Text="{x:Bind Header, Mode=OneWay}" Visibility="{x:Bind HeaderVisibility, Mode=OneWay}" />
+        <NumberBox
+            SelectionChanged="OnISBNSelectionChanged"
+            Text="1"
+            TextChanged="OnISBNTextChanged"
+            TextChanging="OnISBNTextChanging">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Height" Value="36" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <ItemsControl ItemsSource="{x:Bind Text, Mode=OneWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel
+                                                Background="Transparent"
+                                                Orientation="Horizontal"
+                                                Spacing="4" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="sys:Char">
+                                            <TextBlock
+                                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                                Text="{x:Bind}"
+                                                TextDecorations="Underline" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TextBox.Style>
+        </NumberBox>
+    </StackPanel>
+</UserControl>

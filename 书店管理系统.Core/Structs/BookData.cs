@@ -6,6 +6,8 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CoreLibrary.Core.BasicObjects;
+using Mapster;
 using MessagePack;
 using MessagePack.Formatters;
 using 书店管理系统.Core.Others.MessagePackFormatters;
@@ -21,12 +23,12 @@ namespace 书店管理系统.Core.Structs
         DateTime publicationDate,
         string[] category,
         string description,
-        CultureInfo language,
         decimal price,
         int amount
-    ) : ObservableObject
+    ) : DataBaseModel
     {
         [IgnoreDataMember]
+        [AdaptIgnore]
         public bool IsBookDataValid =>
             ISBN != 0
             && !string.IsNullOrEmpty(BookName)
@@ -34,6 +36,9 @@ namespace 书店管理系统.Core.Structs
             && !string.IsNullOrEmpty(Publisher)
             && Price >= 0
             && Amount >= 0;
+
+        public BookData()
+            : this(0, string.Empty, string.Empty, string.Empty, default, [], string.Empty, 0, 0) { }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
@@ -67,18 +72,19 @@ namespace 书店管理系统.Core.Structs
         [property: Key(6)]
         private string _description = description;
 
-        [ObservableProperty]
-        [property: Key(7), MessagePackFormatter(typeof(CultureInfoFormatter))]
-        private CultureInfo _language = language;
+        // TODO 存在严重的数据转换问题，暂时无法解决
+        //[ObservableProperty]
+        //[property: Key(7), MessagePackFormatter(typeof(CultureInfoFormatter))]
+        //private CultureInfo _language = language;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
-        [property: Key(8)]
+        [property: Key(7)]
         private decimal _price = price;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
-        [property: Key(9)]
+        [property: Key(8)]
         private int _amount = amount;
     }
 }

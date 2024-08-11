@@ -8,6 +8,7 @@
     xmlns:local="using:书店管理系统.Controls.ContentDialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sg="using:System.Globalization"
+    xmlns:wcc="using:CommunityToolkit.WinUI.Controls"
     Title="注册用户"
     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
     CloseButtonText="取消"
@@ -21,50 +22,42 @@
         <converters:GenderInt32Converter x:Key="GenderInt32Converter" />
     </ContentDialog.Resources>
     <ScrollViewer MaxHeight="480" VerticalScrollMode="Auto">
-        <GridView
+        <ListView
             HorizontalAlignment="Stretch"
             Background="Transparent"
             SelectionMode="None">
-            <GridView.ItemsPanel>
+            <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid
-                        HorizontalAlignment="Stretch"
-                        MaximumRowsOrColumns="2"
-                        Orientation="Horizontal" />
+                    <wcc:WrapPanel
+                        HorizontalSpacing="8"
+                        Orientation="Horizontal"
+                        VerticalSpacing="8" />
                 </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-            <GridView.ItemContainerStyle>
-                <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
-                    <Setter Property="Margin" Value="8" />
-                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="MinWidth" Value="212" />
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                    <Setter Property="Width" Value="240" />
                 </Style>
-            </GridView.ItemContainerStyle>
+            </ListView.ItemContainerStyle>
             <TextBox Header="用户名称" Text="{x:Bind UserData.Name, Mode=TwoWay}" />
-            <RadioButtons Header="性别" SelectedIndex="{x:Bind UserData.Gender, Converter={StaticResource GenderInt32Converter}, Mode=TwoWay}">
+            <RadioButtons
+                Header="性别"
+                SelectedIndex="{x:Bind UserData.Gender, Converter={StaticResource GenderInt32Converter}, Mode=TwoWay}"
+                VariableSizedWrapGrid.RowSpan="2">
                 <RadioButton Content="男" IsChecked="True" />
                 <RadioButton Content="女" />
                 <RadioButton Content="其他" />
             </RadioButtons>
             <TextBox Header="电话" Text="{x:Bind UserData.Phone, Mode=TwoWay}" />
-            <ComboBox
-                Header="语言"
-                ItemsSource="{x:Bind Cultures}"
-                Loaded="OnLanguageComboxLoaded"
-                SelectedValue="{x:Bind UserData.Language, Mode=TwoWay}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="sg:CultureInfo">
-                        <TextBlock Text="{x:Bind DisplayName}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
             <CheckBox
                 x:Name="randomPasswordBox"
                 Checked="OnRandomCheckBoxChecked"
                 Content="是否生成随机密码"
                 IsChecked="True" />
-            <PasswordBox Header="用户密码" IsEnabled="{x:Bind Non(randomPasswordBox.IsChecked), Mode=OneWay}" />
+            <PasswordBox
+                Header="用户密码"
+                IsEnabled="{x:Bind Non(randomPasswordBox.IsChecked), Mode=OneWay}"
+                Password="{x:Bind UserData.Password, Mode=TwoWay}" />
             <TextBox Header="用户地址" Text="{x:Bind UserData.Address, Mode=TwoWay}" />
             <TextBox Header="邮箱" Text="{x:Bind UserData.Email, Mode=TwoWay}" />
             <NumberBox
@@ -84,6 +77,7 @@
                     </nf:DecimalFormatter>
                 </NumberBox.NumberFormatter>
             </NumberBox>
-        </GridView>
+
+        </ListView>
     </ScrollViewer>
 </ContentDialog>

@@ -15,18 +15,14 @@ using 书店管理系统.Core.Contracts;
 
 namespace 书店管理系统.Services
 {
-    internal class ActivationService(
-        ILocalizeService localizeService,
-        IUserDataProvider userDataProvider,
-        IBookDataProvider bookDataProvider
-    ) : IActivationService
+    internal class ActivationService(ILocalizeService localizeService) : IActivationService
     {
         public async Task LaunchingActivateAsync(IProgress<bool>? progress = null, object? args = null)
         {
             await Task.Yield().ConfigureAwait(false);
             Log.Debug("{0} 开始执行", nameof(LaunchingActivateAsync));
             Stopwatch sw = Stopwatch.StartNew();
-            await Task.WhenAll(InitLocalizeServiceAsync(), LoadUserDatasAsync(), LoadBookDatasAsync()).ConfigureAwait(false);
+            await Task.WhenAll(InitLocalizeServiceAsync()).ConfigureAwait(false);
             sw.Stop();
             Log.Debug("{0} 结束执行 用时 {1}ms", nameof(LaunchingActivateAsync), sw.ElapsedMilliseconds);
             progress?.Report(true);
@@ -74,26 +70,6 @@ namespace 书店管理系统.Services
                 }
             }
             await Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// 加载用户数据
-        /// </summary>
-        /// <returns></returns>
-        private async Task LoadUserDatasAsync()
-        {
-            Log.Debug("{0} 开始执行", nameof(LoadUserDatasAsync));
-            await userDataProvider.LoadUserDatasAsync();
-        }
-
-        /// <summary>
-        /// 加载书籍数据
-        /// </summary>
-        /// <returns></returns>
-        private async Task LoadBookDatasAsync()
-        {
-            Log.Debug("{0} 开始执行", nameof(LoadBookDatasAsync));
-            await bookDataProvider.LoadBookDatasAsync();
         }
     }
 }

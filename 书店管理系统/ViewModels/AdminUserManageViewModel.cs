@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Mapster;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Serilog;
@@ -37,7 +38,7 @@ namespace 书店管理系统.ViewModels
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    Log.Information("添加用户 {@res}", _userService.AddUser(dialog.UserData));
+                    Log.Information("添加用户 {@res}", _userService.RegisterUser(dialog.UserData));
                     break;
                 default:
                     break;
@@ -54,7 +55,26 @@ namespace 书店管理系统.ViewModels
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    Log.Information("删除用户 {@res}", _userService.RemoveUser(data));
+                    Log.Information("删除用户 {@res}", _userService.LogoutUser(data));
+                    break;
+                default:
+                    break;
+            }
+            OnPropertyChanged(nameof(UserDatas));
+        }
+
+        [RelayCommand]
+        private async Task EditUser(MenuFlyout flyout)
+        {
+            var data = (UserData)flyout.Target.DataContext;
+            var clone = data.Adapt<UserData>();
+            var dialog = new EditUserDataContentDialog() { XamlRoot = flyout.XamlRoot }.SetEditMode(clone);
+            var result = await dialog.ShowAsync();
+            switch (result)
+            {
+                case ContentDialogResult.Primary:
+                    dialog.UserData.Adapt(data);
+                    Log.Information("修改用户 {@res}", dialog.UserData.Id);
                     break;
                 default:
                     break;

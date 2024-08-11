@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Windows.UI;
+using 书店管理系统.Core;
 using 书店管理系统.Core.Structs;
 using 书店管理系统.Views;
 
@@ -31,36 +32,36 @@ namespace 书店管理系统.ViewModels
         [RelayCommand]
         private void BackTo()
         {
-            Messenger.Send(
-                new Tuple<Type, NavigationTransitionInfo>(
-                    typeof(UserLoginPage),
-                    new SlideNavigationTransitionInfo()
-                    {
-                        Effect = SlideNavigationTransitionEffect.FromLeft
-                    }
-                ),
-                LoginWindowViewModel.NavigateTo
+            App.Instance.LoginWindow!.TryNavigateToPage(
+                typeof(UserLoginPage),
+                new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft }
             );
             InfoBar infoBar = new InfoBar();
         }
 
         [RelayCommand(CanExecute = nameof(CanAdminLogin))]
-        private void AdminLogin()
+        private async Task AdminLogin()
         {
-            // TODO 暂时先把管理员密钥写进程序里
-            if (AdminPassword == "admin")
-            {
-                AdminLoginInfo = "登录成功";
-                IsInfoShow = true;
-                Severity = InfoBarSeverity.Success;
-                Messenger.Send(new LoginInfo(LoginType.Admin, 0), LoginWindowViewModel.LoginTo);
-            }
-            else
-            {
-                AdminLoginInfo = "登录失败,密钥错误";
-                IsInfoShow = true;
-                Severity = InfoBarSeverity.Error;
-            }
+            var process = new Progress<ActionResult>();
+            await LibrarySystemManager.Instance.TryLoginAsync(
+                "Admin",
+                AdminPassword,
+                new Progress<ActionResult>(r =>
+                {
+                    if (r.IsSucceed)
+                    {
+                        AdminLoginInfo = "登录成功";
+                        IsInfoShow = true;
+                        Severity = InfoBarSeverity.Success;
+                    }
+                    else
+                    {
+                        AdminLoginInfo = "登录失败,密钥错误";
+                        IsInfoShow = true;
+                        Severity = InfoBarSeverity.Error;
+                    }
+                })
+            );
         }
 
         private bool CanAdminLogin() => !string.IsNullOrEmpty(AdminPassword);

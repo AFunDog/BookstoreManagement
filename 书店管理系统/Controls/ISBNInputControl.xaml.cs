@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CommunityToolkit.WinUI;
+using global::Windows.System;
+using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -23,7 +27,7 @@ namespace 书店管理系统.Controls
     public sealed partial class ISBNInputControl : UserControl, INotifyPropertyChanged
     {
         public static DependencyProperty ISBNProperty { get; } =
-            DependencyProperty.Register("ISBN", typeof(long), typeof(ISBNInputControl), new PropertyMetadata(0));
+            DependencyProperty.Register("ISBN", typeof(long), typeof(ISBNInputControl), new PropertyMetadata(0L));
         public static DependencyProperty HeaderProperty { get; } =
             DependencyProperty.Register("Header", typeof(string), typeof(ISBNInputControl), new PropertyMetadata(string.Empty));
 
@@ -35,7 +39,7 @@ namespace 书店管理系统.Controls
             set
             {
                 SetValue(ISBNProperty, value);
-                PropertyChanged?.Invoke(this, new(nameof(ISBNString)));
+                Log.Debug("ISBN : {isbn} {pos}", ISBN, CursorPosition);
             }
         }
         public string Header
@@ -43,8 +47,36 @@ namespace 书店管理系统.Controls
             get => (string)GetValue(HeaderProperty);
             set { SetValue(HeaderProperty, value); }
         }
+        private int _cursorPosition = -1;
+        private int CursorPosition
+        {
+            get => _cursorPosition;
+            set
+            {
+                if (_cursorPosition is >= 0 and < ISBNLength)
+                {
+                    ((TextBlock)rootPanel.Children[_cursorPosition]).Foreground =
+                        App.Instance.Resources["TextFillColorPrimaryBrush"] as Brush;
+                }
 
-        private IEnumerable<int> ISBNString => ISBN.ToString().Select(x => (int)x);
+                if (value is >= -1 and < ISBNLength)
+                {
+                    _cursorPosition = value;
+                    PropertyChanged?.Invoke(this, new(nameof(CursorPosition)));
+                }
+
+                if (_cursorPosition is >= 0 and < ISBNLength - 1)
+                {
+                    ((TextBlock)rootPanel.Children[_cursorPosition]).Foreground =
+                        App.Instance.Resources["AccentTextFillColorPrimaryBrush"] as Brush;
+                }
+
+                Log.Debug("CursorPosition : {pos}", _cursorPosition);
+            }
+        }
+        const int ISBNLength = 13;
+
+        private ObservableCollection<int> ISBNString { get; } = new ObservableCollection<int>(new int[ISBNLength]);
         private Visibility HeaderVisibility => string.IsNullOrEmpty(Header) ? Visibility.Collapsed : Visibility.Visible;
 
         public ISBNInputControl()
@@ -52,15 +84,74 @@ namespace 书店管理系统.Controls
             this.InitializeComponent();
         }
 
-        private void OnISBNTextChanged(object sender, TextChangedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextBox source = (TextBox)sender;
-            Log.Debug("TextChanged {Length}", source.Text.Length);
+            InitISBNString();
+            ISBNString.CollectionChanged += (s, e) =>
+            {
+                var isbn = 0L;
+                for (int i = 0; i <= CursorPosition; i++)
+                {
+                    isbn = isbn * 10 + ISBNString[i];
+                }
+                ISBN = isbn;
+            };
         }
 
-        private void OnISBNSelectionChanged(object sender, RoutedEventArgs e)
+        private void InitISBNString()
         {
-            TextBox source = (TextBox)sender;
+            var isbn = ISBN;
+            var index = 0;
+            while (isbn > 0 && index < ISBNLength)
+            {
+                ISBNString[index] = (int)(isbn % 10);
+                isbn /= 10;
+                index++;
+            }
+            CursorPosition = index - 1;
+        }
+
+        private readonly InputCursor _enterCursor = InputCursor.CreateFromCoreCursor(new(global::Windows.UI.Core.CoreCursorType.IBeam, 0));
+
+        private void OnISBNPanelPointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            ProtectedCursor = _enterCursor;
+        }
+
+        private void OnISBNPanelPointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            ProtectedCursor = null;
+        }
+
+        private void OnISBNPanelKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            Log.Debug("KeyDown {key} {pos}", e.Key, CursorPosition);
+
+            if (e.Key is >= VirtualKey.Number0 and <= VirtualKey.Number9 && CursorPosition < ISBNLength - 1)
+            {
+                CursorPosition++;
+                ISBNString[CursorPosition] = (e.Key - VirtualKey.Number0);
+            }
+            else if (e.Key is >= VirtualKey.NumberPad0 and <= VirtualKey.NumberPad9 && CursorPosition < ISBNLength - 1)
+            {
+                CursorPosition++;
+                ISBNString[CursorPosition] = (e.Key - VirtualKey.NumberPad0);
+            }
+            else if (e.Key is VirtualKey.Delete or VirtualKey.Back && CursorPosition >= 0)
+            {
+                CursorPosition--;
+                ISBNString[CursorPosition + 1] = 0;
+            }
+        }
+
+        private void OnISBNItemPointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            Log.Debug("OnISBNItemPointerPressed index : {index}", ((FrameworkElement)sender).DataContext);
+        }
+
+        private void OnISBNPanelPointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            Log.Debug("ISBN rootPanel TryFocus {res}", rootPanel.Focus(FocusState.Programmatic));
         }
     }
 }

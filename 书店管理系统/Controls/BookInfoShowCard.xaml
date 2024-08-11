@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" ?>
+<UserControl
+    x:Class="书店管理系统.Controls.BookInfoShowCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:书店管理系统.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    PointerEntered="OnPointerEntered"
+    PointerExited="OnPointerExited"
+    mc:Ignorable="d">
+
+    <Grid
+        Margin="0,4,0,0"
+        Padding="8"
+        Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}"
+        CornerRadius="{ThemeResource ControlCornerRadius}"
+        Translation="0,0,8">
+        <Grid.Shadow>
+            <ThemeShadow />
+        </Grid.Shadow>
+        <StackPanel
+            Width="180"
+            Height="240"
+            Orientation="Vertical">
+            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind BookData.BookName, Mode=OneWay}" />
+            <TextBlock Text="{x:Bind BookData.ISBN, Mode=OneWay}" />
+            <TextBlock Text="{x:Bind BookData.Author, Mode=OneWay}" />
+            <TextBlock Text="{x:Bind BookData.Publisher, Mode=OneWay}" />
+            <TextBlock Text="{x:Bind BookData.PublicationDate, Mode=OneWay}" />
+            <TextBlock Text="{x:Bind BookData.Description, Mode=OneWay}" />
+            <TextBlock Text="{x:Bind BookData.Price, Mode=OneWay}" />
+            <TextBlock Text="{x:Bind BookData.Amount, Mode=OneWay}" />
+        </StackPanel>
+        <Button
+            VerticalAlignment="Bottom"
+            Content="购买书籍"
+            Click="BuyBookButtonClicked"
+            IsEnabled="{x:Bind BookData.IsBookDataValid, Mode=OneWay}"
+            Style="{ThemeResource AccentButtonStyle}" />
+    </Grid>
+
+
+</UserControl>

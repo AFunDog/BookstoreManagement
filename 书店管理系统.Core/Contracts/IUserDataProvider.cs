@@ -11,12 +11,10 @@ namespace 书店管理系统.Core.Contracts
     public interface IUserDataProvider
     {
         IReadOnlyCollection<UserData> UserDatas { get; }
-        ActionResult LoadUserDatas();
-        ValueTask<ActionResult> LoadUserDatasAsync();
-        ActionResult SaveUserDatas();
-        ValueTask<ActionResult> SaveUserDatasAsync();
-        ActionResult TryAddUserData(UserData userData);
-        ActionResult TryRemoveUserData(int userId);
-        ActionResult TryGetUserData(int userId, out UserData? userData);
+        Task<ActionResult> LoadUserDatasAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> SaveUserDatasAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> TryAddUserDataAsync(UserData userData, CancellationToken cancellationToken = default);
+        Task<ActionResult> TryRemoveUserDataAsync(int userId, CancellationToken cancellationToken = default);
+        Task<(UserData? userData, ActionResult result)> TryGetUserDataAsync(int userId, CancellationToken cancellationToken = default);
     }
 }

@@ -12,9 +12,10 @@ namespace 书店管理系统.Core.Contracts
         event Action<BookData>? BookDataChanged;
         IReadOnlyCollection<BookData> BookDatas { get; }
 
-        ActionResult AddBook(BookData book);
-        ActionResult EditBookAmount(long ISBN, int addAmount);
-        ActionResult RemoveBook(BookData book);
-        ActionResult TryGetBookData(long ISBN, out BookData? bookData);
+        Task<ActionResult> SaveBookDatasAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> TryAddBook(BookData book, CancellationToken cancellationToken = default);
+        Task<ActionResult> TryEditBookAmount(long ISBN, int addAmount, CancellationToken cancellationToken = default);
+        Task<ActionResult> RemoveBookAsync(BookData book, CancellationToken cancellationToken = default);
+        Task<ActionResult> TryGetBookDataAsync(long ISBN, out BookData? bookData);
     }
 }

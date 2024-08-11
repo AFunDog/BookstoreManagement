@@ -9,17 +9,17 @@ using 书店管理系统.Core.Structs;
 
 namespace 书店管理系统.ViewModels
 {
-    public sealed partial class UserMainViewModel : ObservableRecipient
+    public sealed partial class UserBuyBookViewModel : ObservableObject
     {
-        private readonly IUserService _userService;
+        private readonly IBookService _bookService;
 
         [ObservableProperty]
-        private UserData _loginUserData;
+        private IReadOnlyCollection<BookData> _bookDatas;
 
-        public UserMainViewModel(IUserService userService)
+        public UserBuyBookViewModel(IBookService bookService)
         {
-            _userService = userService;
-            _loginUserData = _userService.LoginUser!;
+            _bookService = bookService;
+            _bookDatas = _bookService.BookDatas;
         }
     }
 }

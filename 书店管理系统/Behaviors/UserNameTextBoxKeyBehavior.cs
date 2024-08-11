@@ -1,13 +1,13 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.Xaml.Interactivity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.Xaml.Interactivity;
 
 namespace 书店管理系统.Behaviors
 {
@@ -16,7 +16,7 @@ namespace 书店管理系统.Behaviors
     /// </summary>
     public class UserNameTextBoxKeyBehavior : Behavior<TextBox>
     {
-        public UIElement Next { get; set; }
+        public UIElement? Next { get; set; }
 
         protected override void OnAttached()
         {
@@ -39,6 +39,5 @@ namespace 书店管理系统.Behaviors
         {
             AssociatedObject.KeyDown -= AssociatedObject_KeyDown;
         }
-
     }
 }

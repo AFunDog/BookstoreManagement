@@ -22,7 +22,11 @@
                     <SymbolIcon Foreground="Red" Symbol="Delete" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Icon="Edit" Text="修改书籍信息" />
+            <MenuFlyoutItem
+                Command="{x:Bind ViewModel.EditBookCommand}"
+                CommandParameter="{x:Bind bookDataCommondFlyout}"
+                Icon="Edit"
+                Text="修改书籍信息" />
         </MenuFlyout>
     </Page.Resources>
     <StackPanel
@@ -67,7 +71,6 @@
                         <TextBlock Text="{x:Bind PublicationDate, Mode=OneWay}" />
                         <!--<TextBlock Text="{x:Bind Category[0], Mode=OneWay}" />-->
                         <TextBlock Text="{x:Bind Description, Mode=OneWay}" />
-                        <TextBlock Text="{x:Bind Language, Mode=OneWay}" />
                         <TextBlock Text="{x:Bind Price, Mode=OneWay}" />
                         <TextBlock Text="{x:Bind Amount, Mode=OneWay}" />
                     </StackPanel>

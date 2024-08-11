@@ -11,9 +11,10 @@ namespace 书店管理系统.Core.Contracts
     {
         event Action<UserData>? UserDataChanged;
         IReadOnlyCollection<UserData> UserDatas { get; }
-
-        ActionResult AddUser(UserData user);
-        ActionResult RemoveUser(UserData user);
-        ActionResult CheckUserLoginInfo(string userName, string password);
+        UserData? LoginUser { get; }
+        ActionResult RegisterUser(UserData user);
+        ActionResult LogoutUser(UserData user);
+        Task<ActionResult> TryLoginAsync(string userName, string password, CancellationToken cancellationToken = default);
+        Task<ActionResult> SaveUserDatasAsync(CancellationToken cancellationToken = default);
     }
 }

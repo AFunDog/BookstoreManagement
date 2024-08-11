@@ -11,12 +11,10 @@ namespace 书店管理系统.Core.Contracts
     public interface IBookDataProvider
     {
         IReadOnlyCollection<BookData> BookDatas { get; }
-        ActionResult LoadBookDatas();
-        ValueTask<ActionResult> LoadBookDatasAsync();
-        ActionResult SaveBookDatas();
-        ValueTask<ActionResult> SaveBookDatasAsync();
-        ActionResult TryAddBookData(BookData bookData);
-        ActionResult TryRemoveBookData(long ISBN);
-        ActionResult TryGetBookData(long ISBN, [NotNullWhen(true)] out BookData? bookData);
+        Task<ActionResult> LoadBookDatasAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> SaveBookDatasAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> TryAddBookDataAsync(BookData bookData, CancellationToken cancellationToken = default);
+        Task<ActionResult> TryRemoveBookDataAsync(long ISBN, CancellationToken cancellationToken = default);
+        Task<(BookData? bookData, ActionResult result)> TryGetBookDataAsync(long ISBN, CancellationToken cancellationToken = default);
     }
 }

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "书店管理系统", "书�
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreServices.WinUI", "..\CoreServices\CoreServices.WinUI\CoreServices.WinUI.csproj", "{9C0E17C2-7B10-459D-9913-E4289702484E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "书店管理系统.Core", "书店管理系统.Core\书店管理系统.Core.csproj", "{C1241088-12A7-4015-BA4C-A55B2E1A327E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "书店管理系统.Core", "书店管理系统.Core\书店管理系统.Core.csproj", "{C1241088-12A7-4015-BA4C-A55B2E1A327E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreServices", "..\CoreServices\CoreServices\CoreServices.csproj", "{117FD651-2F15-4E15-8B27-306C7487A034}"
 EndProject

@@ -21,18 +21,23 @@ namespace 书店管理系统.Core.Services
             _bookDataProvider = bookDataProvider;
         }
 
-        public ActionResult AddBook(BookData book)
+        public async Task<ActionResult> SaveBookDatasAsync(CancellationToken cancellationToken = default)
+        {
+            return await _bookDataProvider.SaveBookDatasAsync();
+        }
+
+        public async Task<ActionResult> AddBookAsync(BookData book)
         {
             if (!book.IsBookDataValid)
             {
                 return new ActionResult(ResultType.Error, "书籍数据无效");
             }
-            if (_bookDataProvider.TryGetBookData(book.ISBN, out var bookData).ResultType == ResultType.OK)
+            if (_bookDataProvider.TryGetBookDataAsync(book.ISBN, out var bookData).ResultType == ResultType.Success)
             {
                 return new ActionResult(ResultType.Error, $"此 {book.ISBN} 的书籍已存在");
             }
             _bookDataProvider.TryAddBookData(book);
-            return new ActionResult(ResultType.OK, string.Empty);
+            return new ActionResult(ResultType.Success, string.Empty);
         }
 
         public ActionResult RemoveBook(BookData book)
@@ -42,14 +47,14 @@ namespace 书店管理系统.Core.Services
 
         public ActionResult EditBookAmount(long ISBN, int addAmount)
         {
-            if (_bookDataProvider.TryGetBookData(ISBN, out var bookData).ResultType == ResultType.OK && bookData is not null)
+            if (_bookDataProvider.TryGetBookData(ISBN, out var bookData).ResultType == ResultType.Success && bookData is not null)
             {
                 if (bookData.Amount + addAmount < 0)
                 {
                     return new ActionResult(ResultType.Error, "库存书籍数量不够");
                 }
                 bookData.Amount += addAmount;
-                return new ActionResult(ResultType.OK, string.Empty);
+                return new ActionResult(ResultType.Success, string.Empty);
             }
             return new ActionResult(ResultType.Error, $"此 {ISBN} 的书籍不存在");
         }

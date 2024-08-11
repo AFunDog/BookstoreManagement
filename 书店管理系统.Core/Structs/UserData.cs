@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CoreLibrary.Core.BasicObjects;
+using Mapster;
 using MessagePack;
 using 书店管理系统.Core.Others.MessagePackFormatters;
 
@@ -28,17 +30,20 @@ namespace 书店管理系统.Core.Structs
         string email,
         DateTime createTime,
         DateTime updateTime,
-        decimal account,
-        CultureInfo language
-    ) : ObservableObject
+        decimal account
+    ) : DataBaseModel
     {
         [IgnoreMember]
+        [AdaptIgnore]
         public bool IsUserDataValid =>
             !string.IsNullOrEmpty(Name)
             && !string.IsNullOrEmpty(Password)
             && !string.IsNullOrEmpty(Phone)
             && !string.IsNullOrEmpty(Address)
             && !string.IsNullOrEmpty(Email);
+
+        public UserData()
+            : this(-1, string.Empty, string.Empty, Gender.Other, string.Empty, string.Empty, string.Empty, default, default, 0) { }
 
         [ObservableProperty]
         [property: Key(0)]
@@ -85,8 +90,9 @@ namespace 书店管理系统.Core.Structs
         [property: Key(9)]
         private decimal _account = account;
 
-        [ObservableProperty]
-        [property: Key(10), MessagePackFormatter(typeof(CultureInfoFormatter))]
-        private CultureInfo _language = language;
+        // TODO 存在严重的数据转换问题，暂时无法解决
+        //[ObservableProperty]
+        //[property: Key(10), MessagePackFormatter(typeof(CultureInfoFormatter))]
+        //private CultureInfo _language = language;
     }
 }

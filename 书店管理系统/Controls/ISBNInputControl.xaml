@@ -7,6 +7,7 @@
     xmlns:local="using:书店管理系统.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="using:System"
+    Loaded="OnLoaded"
     mc:Ignorable="d">
 
     <StackPanel
@@ -14,40 +15,83 @@
         Orientation="Vertical"
         Spacing="8">
         <TextBlock Text="{x:Bind Header, Mode=OneWay}" Visibility="{x:Bind HeaderVisibility, Mode=OneWay}" />
-        <NumberBox
-            SelectionChanged="OnISBNSelectionChanged"
-            Text="1"
-            TextChanged="OnISBNTextChanged"
-            TextChanging="OnISBNTextChanging">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Setter Property="Height" Value="36" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TextBox">
-                                <ItemsControl ItemsSource="{x:Bind Text, Mode=OneWay}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel
-                                                Background="Transparent"
-                                                Orientation="Horizontal"
-                                                Spacing="4" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="sys:Char">
-                                            <TextBlock
-                                                Style="{ThemeResource SubtitleTextBlockStyle}"
-                                                Text="{x:Bind}"
-                                                TextDecorations="Underline" />
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TextBox.Style>
-        </NumberBox>
+        <StackPanel
+            x:Name="rootPanel"
+            MinHeight="36"
+            AllowFocusOnInteraction="True"
+            Background="Transparent"
+            IsTabStop="True"
+            Orientation="Horizontal"
+            PointerEntered="OnISBNPanelPointerEntered"
+            PointerExited="OnISBNPanelPointerExited"
+            PointerPressed="OnISBNPanelPointerPressed"
+            PreviewKeyDown="OnISBNPanelKeyDown"
+            Spacing="4">
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[0], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[1], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[2], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[3], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[4], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[5], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[6], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[7], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[8], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[9], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[10], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[11], Mode=OneWay}"
+                TextDecorations="Underline" />
+            <TextBlock
+                PointerPressed="OnISBNItemPointerPressed"
+                Style="{ThemeResource SubtitleTextBlockStyle}"
+                Text="{x:Bind ISBNString[12], Mode=OneWay}"
+                TextDecorations="Underline" />
+        </StackPanel>
     </StackPanel>
 </UserControl>

@@ -8,7 +8,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock Text="用户页面" />
-    </Grid>
+    <StackPanel
+        Margin="16"
+        Orientation="Vertical"
+        Spacing="16">
+        <TextBlock
+            HorizontalAlignment="Center"
+            Style="{ThemeResource SubtitleTextBlockStyle}"
+            Text="用户页面" />
+        <StackPanel
+            x:Name="userInfoCard"
+            Padding="8"
+            Background="Transparent"
+            CornerRadius="{ThemeResource ControlCornerRadius}"
+            Orientation="Horizontal"
+            PointerEntered="UserInfoCard_PointerEntered"
+            PointerExited="UserInfoCard_PointerExited"
+            Spacing="8">
+            <StackPanel.BackgroundTransition>
+                <BrushTransition Duration="0:0:0.1" />
+            </StackPanel.BackgroundTransition>
+            <Ellipse
+                Width="32"
+                Height="32"
+                Fill="AliceBlue" />
+            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.LoginUserData.Name, Mode=OneWay}" />
+            <TextBlock>
+                <Run Text="Id:" />
+                <Run Text="{x:Bind ViewModel.LoginUserData.Id, Mode=OneWay}" />
+                <Run Text="{x:Bind ViewModel.LoginUserData.Password, Mode=OneWay}" />
+                <Run Text="{x:Bind ViewModel.LoginUserData.Gender, Mode=OneWay}" />
+                <Run Text="{x:Bind ViewModel.LoginUserData.Address, Mode=OneWay}" />
+                <Run Text="{x:Bind ViewModel.LoginUserData.Email, Mode=OneWay}" />
+                <Run Text="{x:Bind ViewModel.LoginUserData.Phone, Mode=OneWay}" />
+            </TextBlock>
+        </StackPanel>
+    </StackPanel>
 </Page>

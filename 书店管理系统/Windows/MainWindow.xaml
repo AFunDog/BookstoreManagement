@@ -10,6 +10,7 @@
     xmlns:windowex="using:WinUIEx"
     Width="1280"
     Height="720"
+    Closed="OnWindowClosed"
     IsResizable="False"
     mc:Ignorable="d">
     <Window.SystemBackdrop>

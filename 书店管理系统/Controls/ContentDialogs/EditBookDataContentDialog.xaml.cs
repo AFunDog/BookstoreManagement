@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Serilog;
+using Vanara.Extensions.Reflection;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using 书店管理系统.Core.Structs;
@@ -31,16 +33,25 @@ namespace 书店管理系统.Controls.ContentDialogs
         }
 
         private double Increment => 0.01;
-        private IReadOnlyCollection<CultureInfo> Cultures { get; } = CultureInfo.GetCultures(CultureTypes.NeutralCultures);
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public EditModeType EditMode { get; set; } = EditModeType.NewBook;
-        public BookData BookData { get; set; } =
-            new(1, string.Empty, string.Empty, string.Empty, default, [], string.Empty, CultureInfo.CurrentCulture, 0, 0);
+        public BookData BookData { get; set; } = new(1, string.Empty, string.Empty, string.Empty, default, [], string.Empty, 0, 0);
 
         public EditBookDataContentDialog()
         {
             this.InitializeComponent();
+            PropertyChanged += EditBookDataContentDialog_PropertyChanged;
+            BookData.PropertyChanged += EditBookDataContentDialog_PropertyChanged;
+        }
+
+        private void EditBookDataContentDialog_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            Log.Debug(
+                "PropertyChanged: {Property} {@value}",
+                e.PropertyName,
+                sender!.GetType().GetProperty(e.PropertyName!)!.GetValue(sender)
+            );
         }
 
         public EditBookDataContentDialog SetEditMode(BookData target)
@@ -48,6 +59,7 @@ namespace 书店管理系统.Controls.ContentDialogs
             BookData = target;
             EditMode = EditModeType.Edit;
             Title = "编辑书籍信息";
+            PropertyChanged?.Invoke(this, new(nameof(BookData)));
             return this;
         }
     }

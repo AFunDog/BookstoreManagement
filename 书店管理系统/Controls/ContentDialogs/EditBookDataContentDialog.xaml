@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:书店管理系统.Controls.ContentDialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wcc="using:CommunityToolkit.WinUI.Controls"
     Title="上架新书籍"
     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
     CloseButtonText="取消"
@@ -20,25 +21,24 @@
         <converters:DoubleDecimalConverter x:Key="DoubleDecimalConverter" />
     </ContentDialog.Resources>
     <ScrollViewer MaxHeight="480" VerticalScrollMode="Auto">
-        <GridView
+        <ListView
             HorizontalAlignment="Stretch"
             Background="Transparent"
             SelectionMode="None">
-            <GridView.ItemContainerStyle>
-                <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
-                    <Setter Property="Margin" Value="8" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="MinWidth" Value="212" />
+            <ListView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                    <Setter Property="MinWidth" Value="240" />
                 </Style>
-            </GridView.ItemContainerStyle>
-            <GridView.ItemsPanel>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid
+                    <wcc:WrapPanel
                         HorizontalAlignment="Stretch"
-                        MaximumRowsOrColumns="2"
-                        Orientation="Horizontal" />
+                        HorizontalSpacing="8"
+                        Orientation="Horizontal"
+                        VerticalSpacing="8" />
                 </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
+            </ListView.ItemsPanel>
             <c:ISBNInputControl Header="ISBN" ISBN="{x:Bind BookData.ISBN, Mode=TwoWay}" />
             <TextBox Header="书籍名称" Text="{x:Bind BookData.BookName, Mode=TwoWay}" />
             <TextBox Header="作者" Text="{x:Bind BookData.Author, Mode=TwoWay}" />
@@ -46,12 +46,11 @@
             <CalendarDatePicker Header="出版时间" />
             <TextBox Header="书籍分类" />
             <TextBox
-                MinHeight="72"
+                Height="108"
                 AcceptsReturn="True"
                 Header="书籍简介"
                 Text="{x:Bind BookData.Description, Mode=TwoWay}"
                 TextWrapping="Wrap" />
-            <ComboBox Header="语言/地区" />
             <NumberBox
                 Header="价格"
                 Minimum="0"
@@ -75,6 +74,6 @@
                 SmallChange="1"
                 SpinButtonPlacementMode="Compact"
                 Value="{x:Bind BookData.Amount, Mode=TwoWay}" />
-        </GridView>
+        </ListView>
     </ScrollViewer>
 </ContentDialog>

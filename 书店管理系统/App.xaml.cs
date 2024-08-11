@@ -21,6 +21,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using 书店管理系统.Contracts;
+using 书店管理系统.Core;
 using 书店管理系统.Core.Contracts;
 using 书店管理系统.Core.Services;
 using 书店管理系统.Services;
@@ -51,6 +52,8 @@ namespace 书店管理系统
             throw new ArgumentException($"{typeof(T)} 服务未找到");
         }
 
+        public IServiceProvider ServiceProvider { get; }
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -59,21 +62,22 @@ namespace 书店管理系统
         {
             this.InitializeComponent();
 
+            _ = LibrarySystemManager.CreateInstance(new(new LibrarySystemProcess()));
+
             var builder = new ServiceCollection()
                 // 注册基础服务
                 .AddTransient<IActivationService, ActivationService>()
                 .AddSingleton<INavigateService, NavigateService>()
                 .AddSingleton<ILocalizeService, LocalizeService>()
-                .AddSingleton<IUserService, UserService>()
-                .AddSingleton<IUserDataProvider, UserDataProvider>()
-                .AddSingleton<IBookDataProvider, LocalBookDataProvider>()
-                .AddSingleton<IBookService, BookService>()
+                .AddSingleton<IUserService>(s => LibrarySystemManager.Instance.UserService)
+                .AddSingleton<IBookService>(s => LibrarySystemManager.Instance.BookService)
                 // 注册视图模型
                 .AddTransient<LoginWindowViewModel>()
                 .AddTransient<MainWindowViewModel>()
                 .AddTransient<AdminLoginViewModel>()
                 .AddTransient<UserLoginViewModel>()
                 .AddTransient<UserMainViewModel>()
+                .AddTransient<UserBuyBookViewModel>()
                 .AddTransient<AdminMainViewModel>()
                 .AddTransient<AdminUserManageViewModel>()
                 .AddTransient<AdminBookManageViewModel>();
@@ -82,7 +86,6 @@ namespace 书店管理系统
             Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Debug().CreateLogger();
 
             UnhandledException += App_UnhandledException;
-            App.GetService<IActivationService>().LaunchingActivateAsync().Wait();
         }
 
         private MainWindow? _mainWindow;
@@ -123,8 +126,6 @@ namespace 书店管理系统
             if (_loginWindow is null)
                 Exit();
         }
-
-        public IServiceProvider ServiceProvider { get; }
 
         private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
         {

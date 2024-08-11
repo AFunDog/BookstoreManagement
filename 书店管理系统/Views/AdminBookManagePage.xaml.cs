@@ -41,9 +41,9 @@ namespace 书店管理系统.Views
             }
         }
 
-        private void OnUnloaded(object sender, RoutedEventArgs e)
+        private async void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            App.GetService<IBookDataProvider>().SaveBookDatas();
+            await App.GetService<IBookService>().SaveBookDatasAsync();
         }
     }
 }

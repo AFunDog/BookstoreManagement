@@ -23,6 +23,7 @@
 	  <Page Remove="Controls\ContentDialog\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="Controls\BookInfoShowCard.xaml" />
 	  <None Remove="Controls\ContentDialogs\AffirmRemoveBookContentDialog.xaml" />
 	  <None Remove="Controls\ContentDialogs\AffirmRemoveUserContentDialog.xaml" />
 	  <None Remove="Controls\ContentDialogs\EditBookDataContentDialog.xaml" />
@@ -34,6 +35,7 @@
 	  <None Remove="Views\AdminMainPage.xaml" />
 	  <None Remove="Views\AdminUserManagePage.xaml" />
 	  <None Remove="Views\LoadingPage.xaml" />
+	  <None Remove="Views\UserBuyBookPage.xaml" />
 	  <None Remove="Views\UserLoginPage.xaml" />
 	  <None Remove="Views\UserMainPage.xaml" />
 	  <None Remove="Windows\LoginWindow.xaml" />
@@ -43,6 +45,7 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.0.240109" />
+		<PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.0.240109" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
@@ -50,6 +53,7 @@
 		<PackageReference Include="Serilog" Version="4.0.1" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+		<PackageReference Include="Vanara.Core" Version="4.0.3" />
 		<PackageReference Include="WinUIEx" Version="2.3.4" />
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
@@ -138,6 +142,11 @@
 	  <PRIResource Remove="Controls\ContentDialog\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Page Update="Views\UserBuyBookPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
 	  <Page Update="Controls\ISBNInputControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
@@ -156,5 +165,11 @@
 	  <Page Update="Controls\ContentDialogs\AffirmRemoveUserContentDialog.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <CustomAdditionalCompileInputs Remove="Controls\BookInfoShowCard.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Resource Remove="Controls\BookInfoShowCard.xaml" />
 	</ItemGroup>
 </Project>

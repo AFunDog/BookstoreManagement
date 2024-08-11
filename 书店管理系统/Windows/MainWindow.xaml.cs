@@ -32,6 +32,8 @@ namespace 书店管理系统.Windows
     /// </summary>
     public sealed partial class MainWindow : WindowEx
     {
+        public bool ExitWithShutdownApp { get; set; } = true;
+
         public MainWindowViewModel ViewModel { get; set; }
 
         public MainWindow(LoginInfo loginInfo)
@@ -59,9 +61,12 @@ namespace 书店管理系统.Windows
             };
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void OnWindowClosed(object sender, WindowEventArgs args)
         {
-            Close();
+            if (ExitWithShutdownApp)
+            {
+                App.Instance.Exit();
+            }
         }
     }
 }

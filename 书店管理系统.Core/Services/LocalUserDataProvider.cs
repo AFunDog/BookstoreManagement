@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MessagePack;
+using Serilog;
 using 书店管理系统.Core.Contracts;
 using 书店管理系统.Core.Structs;
 
@@ -24,71 +25,51 @@ namespace 书店管理系统.Core.Services
 
         public IReadOnlyCollection<UserData> UserDatas => _userDatas;
 
-        public ActionResult LoadUserDatas()
+        public async Task<ActionResult> LoadUserDatasAsync(CancellationToken cancellationToken = default)
         {
             if (!File.Exists(filePath))
-                return new(ResultType.Error, $"文件 {filePath} 不存在");
-            foreach (var data in MessagePackSerializer.Deserialize<IEnumerable<UserData>>(File.ReadAllBytes(filePath)))
-            {
-                _userDatas.Add(data);
-            }
-            return new(ResultType.OK, string.Empty);
-        }
+                return ActionResult
+                    .Error($"文件 {filePath} 不存在")
+                    .TryReportResult($"读取用户数据错误 文件 {filePath} 不存在", null, LibrarySystemManager.Logger);
 
-        public async ValueTask<ActionResult> LoadUserDatasAsync()
-        {
-            if (!File.Exists(filePath))
-                return new(ResultType.Error, $"文件 {filePath} 不存在");
             using FileStream fileStream = File.OpenRead(filePath);
             foreach (var data in await MessagePackSerializer.DeserializeAsync<IEnumerable<UserData>>(fileStream))
             {
                 _userDatas.Add(data);
             }
-            return new(ResultType.OK, string.Empty);
+            return ActionResult.Success().TryReportResult("加载用户数据完成", null, LibrarySystemManager.Logger);
         }
 
-        public ActionResult SaveUserDatas()
-        {
-            if (!File.Exists(filePath))
-                File.Create(filePath).Close();
-            File.WriteAllBytes(filePath, MessagePackSerializer.Serialize(_userDatas));
-            return new(ResultType.OK, string.Empty);
-        }
-
-        public async ValueTask<ActionResult> SaveUserDatasAsync()
+        public async Task<ActionResult> SaveUserDatasAsync(CancellationToken cancellationToken = default)
         {
             if (!File.Exists(filePath))
                 File.Create(filePath).Close();
             using FileStream fileStream = File.OpenWrite(filePath);
             await MessagePackSerializer.SerializeAsync(fileStream, _userDatas);
-            return new(ResultType.OK, string.Empty);
+            return ActionResult.Success().TryReportResult("保存用户数据完成", null, LibrarySystemManager.Logger);
         }
 
-        public ActionResult TryAddUserData(UserData userData)
+        public async Task<ActionResult> TryAddUserDataAsync(UserData userData, CancellationToken cancellationToken = default)
         {
             _userDatas.Add(userData);
-            return new(ResultType.OK, string.Empty);
+            return ActionResult.Success();
         }
 
-        public ActionResult TryGetUserData(int userId, out UserData? userData)
+        public async Task<(UserData? userData, ActionResult result)> TryGetUserDataAsync(
+            int userId,
+            CancellationToken cancellationToken = default
+        )
         {
-            userData = _userDatas.FirstOrDefault(x => x.Id == userId);
-            if (userData is not null)
-            {
-                return new(ResultType.OK, string.Empty);
-            }
-            else
-            {
-                return new ActionResult(ResultType.Error, $"{userId} 不存在");
-            }
+            var userData = _userDatas.FirstOrDefault(x => x.Id == userId);
+            return userData is not null ? new(userData, ActionResult.Success()) : new(null, ActionResult.Error($"{userId} 不存在"));
         }
 
-        public ActionResult TryRemoveUserData(int userId)
+        public async Task<ActionResult> TryRemoveUserDataAsync(int userId, CancellationToken cancellationToken = default)
         {
             if (_userDatas.FirstOrDefault(x => x.Id == userId) is UserData userData)
             {
                 _userDatas.Remove(userData);
-                return new ActionResult(ResultType.OK, string.Empty);
+                return new ActionResult(ResultType.Success, string.Empty);
             }
             else
             {

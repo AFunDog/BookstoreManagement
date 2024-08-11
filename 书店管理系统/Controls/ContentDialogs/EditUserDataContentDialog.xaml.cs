@@ -35,23 +35,10 @@ namespace 书店管理系统.Controls.ContentDialogs
         }
 
         private double Increment => 0.01;
-        private IReadOnlyCollection<CultureInfo> Cultures { get; } = CultureInfo.GetCultures(CultureTypes.NeutralCultures);
-        private PropertyChangedEventHandler? _propertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         public EditModeType EditMode { get; set; } = EditModeType.Register;
         public UserData UserData { get; set; } =
-            new(
-                -1,
-                string.Empty,
-                string.Empty,
-                Gender.Male,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                DateTime.Now,
-                DateTime.Now,
-                0,
-                CultureInfo.CurrentCulture
-            );
+            new(-1, string.Empty, string.Empty, Gender.Male, string.Empty, string.Empty, string.Empty, DateTime.Now, DateTime.Now, 0);
 
         public EditUserDataContentDialog()
         {
@@ -63,30 +50,8 @@ namespace 书店管理系统.Controls.ContentDialogs
             UserData = target;
             EditMode = EditModeType.Edit;
             Title = "更新用户";
+            PropertyChanged?.Invoke(this, new(nameof(UserData)));
             return this;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged
-        {
-            add
-            {
-                UserData.PropertyChanged += value;
-                _propertyChanged += value;
-            }
-            remove
-            {
-                UserData.PropertyChanged -= value;
-                _propertyChanged -= value;
-            }
-        }
-
-        private void OnLanguageComboxLoaded(object sender, RoutedEventArgs e)
-        {
-            ComboBox source = (ComboBox)sender;
-            var item = source.Items.FirstOrDefault(x =>
-                x is CultureInfo culture && CultureInfo.CreateSpecificCulture(culture.Name).Name == CultureInfo.CurrentCulture.Name
-            );
-            source.SelectedItem = item;
         }
 
         private bool Non(bool? value) => !value ?? false;

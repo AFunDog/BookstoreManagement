@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Mapster;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Serilog;
@@ -58,6 +59,24 @@ namespace 书店管理系统.ViewModels
                     break;
             }
             OnPropertyChanged(nameof(BookDatas));
+        }
+
+        [RelayCommand]
+        private async Task EditBook(MenuFlyout flyout)
+        {
+            var data = (BookData)flyout.Target.DataContext;
+            var clone = data.Adapt<BookData>();
+            var dialog = new EditBookDataContentDialog() { XamlRoot = flyout.XamlRoot }.SetEditMode(clone);
+            var result = await dialog.ShowAsync();
+            switch (result)
+            {
+                case ContentDialogResult.Primary:
+                    dialog.BookData.Adapt(data);
+                    Log.Information("修改 {ISBN} 图书数据", dialog.BookData.ISBN);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -32,11 +32,6 @@ namespace 书店管理系统.Views
             this.InitializeComponent();
         }
 
-        private void OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            App.GetService<IUserDataProvider>().SaveUserDatas();
-        }
-
         private void OnItemPointerPressed(object sender, PointerRoutedEventArgs e)
         {
             UIElement source = (UIElement)sender;
@@ -44,6 +39,11 @@ namespace 书店管理系统.Views
             {
                 userDataCommondFlyout.ShowAt(source, e.GetCurrentPoint(source).Position);
             }
+        }
+
+        private async void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            await App.GetService<IUserService>().SaveUserDatasAsync();
         }
     }
 }

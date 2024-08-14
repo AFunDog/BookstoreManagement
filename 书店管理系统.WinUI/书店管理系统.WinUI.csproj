@@ -3,7 +3,7 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-		<RootNamespace>书店管理系统</RootNamespace>
+		<RootNamespace>书店管理系统.WinUI</RootNamespace>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<Platforms>x86;x64;ARM64</Platforms>
 		<RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x86;win-x64;win-arm64</RuntimeIdentifiers>
@@ -30,15 +30,6 @@
 	  <None Remove="Controls\ISBNInputControl.xaml" />
 	  <None Remove="Controls\RegisterUserContentDialog.xaml" />
 	  <None Remove="Controls\UserInfoBorder.xaml" />
-	  <None Remove="Views\AdminBookManagePage.xaml" />
-	  <None Remove="Views\AdminLoginPage.xaml" />
-	  <None Remove="Views\AdminMainPage.xaml" />
-	  <None Remove="Views\AdminUserManagePage.xaml" />
-	  <None Remove="Views\LoadingPage.xaml" />
-	  <None Remove="Views\UserBuyBookPage.xaml" />
-	  <None Remove="Views\UserLoginPage.xaml" />
-	  <None Remove="Views\UserMainPage.xaml" />
-	  <None Remove="Windows\LoginWindow.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -68,27 +59,17 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\" />
+	  <Folder Include="Contracts\" />
 	  <Folder Include="Helpers\" />
+	  <Folder Include="Services\" />
 	  <Folder Include="Structs\" />
-	  <Folder Include="UserControls\" />
+	  <Folder Include="ViewModels\" />
+	  <Folder Include="Views\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Page Update="Controls\ContentDialogs\AffirmRemoveBookContentDialog.xaml">
 	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 	    <SubType>Designer</SubType>
-	  </Page>
-	  <Page Update="Views\UserLoginPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\LoadingPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Windows\LoginWindow.xaml">
-	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
 
@@ -101,12 +82,6 @@
 		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>
 	<ItemGroup>
-	  <CustomAdditionalCompileInputs Remove="Views\AdminLoginPage.xaml" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Resource Remove="Views\AdminLoginPage.xaml" />
-	</ItemGroup>
-	<ItemGroup>
 	  <ProjectReference Include="..\..\CoreServices\CoreServices.WinUI\CoreServices.WinUI.csproj" />
 	  <ProjectReference Include="..\..\CoreServices\CoreServices\CoreServices.csproj" />
 	  <ProjectReference Include="..\书店管理系统.Core\书店管理系统.Core.csproj" />
@@ -115,22 +90,6 @@
 	  <Page Update="Controls\UserInfoBorder.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\AdminMainPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\UserMainPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <CustomAdditionalCompileInputs Remove="Views\AdminUserManagePage.xaml" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Resource Remove="Views\AdminUserManagePage.xaml" />
 	</ItemGroup>
 	<ItemGroup>
 	  <CustomAdditionalCompileInputs Remove="Controls\RegisterUserContentDialog.xaml" />
@@ -142,22 +101,12 @@
 	  <PRIResource Remove="Controls\ContentDialog\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Page Update="Views\UserBuyBookPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
 	  <Page Update="Controls\ISBNInputControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Page Update="Controls\ContentDialogs\EditBookDataContentDialog.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\AdminBookManagePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>

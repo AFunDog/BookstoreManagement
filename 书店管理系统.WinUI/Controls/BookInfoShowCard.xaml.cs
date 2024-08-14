@@ -63,7 +63,7 @@ namespace 书店管理系统.Controls
         private static void OnBookDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             BookInfoShowCard source = (BookInfoShowCard)d;
-            source.IsBookCanBought = source.BookData.IsBookDataValid;
+            source.IsBookCanBought = source.BookData.IsValid;
         }
 
         private void OnPointerEntered(object sender, PointerRoutedEventArgs e)
@@ -79,7 +79,6 @@ namespace 书店管理系统.Controls
         private void BuyBookButtonClicked(object sender, RoutedEventArgs e)
         {
             IsBookCanBought = false;
-            App.GetService<IBookService>()
         }
     }
 }

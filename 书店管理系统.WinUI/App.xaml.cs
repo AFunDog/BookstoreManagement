@@ -20,22 +20,14 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using 书店管理系统.Contracts;
 using 书店管理系统.Core;
 using 书店管理系统.Core.Contracts;
-using 书店管理系统.Core.Services;
-using 书店管理系统.Services;
-using 书店管理系统.ViewModels;
-using 书店管理系统.Windows;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace 书店管理系统
 {
-    // 使用本地用户数据
-    using UserDataProvider = LocalUserDataProvider;
-
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
@@ -43,6 +35,12 @@ namespace 书店管理系统
     {
         public static App Instance => (Current as App) ?? new();
 
+        /// <summary>
+        /// 获取服务
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public static T GetService<T>()
         {
             if ((Current as App)!.ServiceProvider.GetService<T>() is T service)
@@ -62,69 +60,18 @@ namespace 书店管理系统
         {
             this.InitializeComponent();
 
-            _ = LibrarySystemManager.CreateInstance(new(new LibrarySystemProcess()));
+            //_ = LibrarySystemManager.CreateInstance(new(new LibrarySystemProcess()));
 
             var builder = new ServiceCollection()
                 // 注册基础服务
-                .AddTransient<IActivationService, ActivationService>()
                 .AddSingleton<INavigateService, NavigateService>()
-                .AddSingleton<ILocalizeService, LocalizeService>()
-                .AddSingleton<IUserService>(s => LibrarySystemManager.Instance.UserService)
-                .AddSingleton<IBookService>(s => LibrarySystemManager.Instance.BookService)
-                // 注册视图模型
-                .AddTransient<LoginWindowViewModel>()
-                .AddTransient<MainWindowViewModel>()
-                .AddTransient<AdminLoginViewModel>()
-                .AddTransient<UserLoginViewModel>()
-                .AddTransient<UserMainViewModel>()
-                .AddTransient<UserBuyBookViewModel>()
-                .AddTransient<AdminMainViewModel>()
-                .AddTransient<AdminUserManageViewModel>()
-                .AddTransient<AdminBookManageViewModel>();
+                .AddSingleton<ILocalizeService, LocalizeService>();
+            // 注册视图模型
 
             ServiceProvider = builder.BuildServiceProvider();
             Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Debug().CreateLogger();
 
             UnhandledException += App_UnhandledException;
-        }
-
-        private MainWindow? _mainWindow;
-        private LoginWindow? _loginWindow;
-        public MainWindow? MainWindow
-        {
-            get => _mainWindow;
-            set
-            {
-                if (_mainWindow is not null)
-                    _mainWindow.Closed -= MainWindow_Closed;
-                _mainWindow = value;
-                if (_mainWindow is not null)
-                    _mainWindow.Closed += MainWindow_Closed;
-            }
-        }
-        public LoginWindow? LoginWindow
-        {
-            get => _loginWindow;
-            set
-            {
-                if (_loginWindow is not null)
-                    _loginWindow.Closed -= LoginWindow_Closed;
-                _loginWindow = value;
-                if (_loginWindow is not null)
-                    _loginWindow.Closed += LoginWindow_Closed;
-            }
-        }
-
-        private void LoginWindow_Closed(object sender, WindowEventArgs args)
-        {
-            if (_mainWindow is null)
-                Exit();
-        }
-
-        private void MainWindow_Closed(object sender, WindowEventArgs args)
-        {
-            if (_loginWindow is null)
-                Exit();
         }
 
         private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
@@ -136,10 +83,6 @@ namespace 书店管理系统
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
-        {
-            LoginWindow = new LoginWindow();
-            LoginWindow.Activate();
-        }
+        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args) { }
     }
 }

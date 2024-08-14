@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -14,9 +16,24 @@ namespace 书店管理系统.Core.Structs
 {
     public enum Gender
     {
+        Unknown,
         Male,
         Female,
         Other
+    }
+
+    public interface IReadOnlyUserData : INotifyPropertyChanged
+    {
+        public int Id { get; }
+        public string Name { get; }
+        public string Password { get; }
+        public Gender Gender { get; }
+        public string Phone { get; }
+        public string Address { get; }
+        public string Email { get; }
+        public DateTime CreateTime { get; }
+        public DateTime UpdateTime { get; }
+        public decimal Account { get; }
     }
 
     [MessagePackObject]
@@ -31,31 +48,26 @@ namespace 书店管理系统.Core.Structs
         DateTime createTime,
         DateTime updateTime,
         decimal account
-    ) : DataBaseModel
+    ) : DataBaseModel, IReadOnlyUserData
     {
         [IgnoreMember]
         [AdaptIgnore]
-        public bool IsUserDataValid =>
-            !string.IsNullOrEmpty(Name)
-            && !string.IsNullOrEmpty(Password)
-            && !string.IsNullOrEmpty(Phone)
-            && !string.IsNullOrEmpty(Address)
-            && !string.IsNullOrEmpty(Email);
+        public bool IsValid => !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Password);
 
         public UserData()
-            : this(-1, string.Empty, string.Empty, Gender.Other, string.Empty, string.Empty, string.Empty, default, default, 0) { }
+            : this(-1, string.Empty, string.Empty, Gender.Unknown, string.Empty, string.Empty, string.Empty, default, default, 0) { }
 
         [ObservableProperty]
         [property: Key(0)]
         private int _id = id;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsUserDataValid))]
+        [NotifyPropertyChangedFor(nameof(IsValid))]
         [property: Key(1)]
         private string _name = name;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsUserDataValid))]
+        [NotifyPropertyChangedFor(nameof(IsValid))]
         [property: Key(2)]
         private string _password = password;
 
@@ -64,17 +76,14 @@ namespace 书店管理系统.Core.Structs
         private Gender _gender = gender;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsUserDataValid))]
         [property: Key(4)]
         private string _phone = phone;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsUserDataValid))]
         [property: Key(5)]
         private string _address = address;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsUserDataValid))]
         [property: Key(6)]
         private string _email = email;
 

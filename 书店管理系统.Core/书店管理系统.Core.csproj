@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CoreServices\CoreLibrary.Core\CoreLibrary.Core.csproj" />
+    <ProjectReference Include="..\..\CoreServices\CoreLibrary.Toolkit\CoreLibrary.Toolkit.csproj" />
     <ProjectReference Include="..\..\CoreServices\CoreServices\CoreServices.csproj" />
   </ItemGroup>
 

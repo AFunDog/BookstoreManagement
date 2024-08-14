@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoreLibrary.Core.BasicObjects;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.Threading;
 using Serilog;
 using 书店管理系统.Core.Contracts;
 using 书店管理系统.Core.Services;
@@ -13,190 +15,102 @@ using 书店管理系统.Core.Structs;
 
 namespace 书店管理系统.Core
 {
-    public sealed class LibrarySystemManager
+    public sealed class LibrarySystemManager : DisposableObject
     {
-        enum ProcessState
-        {
-            /// <summary>
-            /// 加载前
-            /// </summary>
-            BeforeLoding,
+        /// <summary>
+        /// 当前书籍管理系统版本
+        /// </summary>
+        public const string Version = "0.0.1";
+        private static LibrarySystemManager? _instance = null;
 
-            /// <summary>
-            /// 正在加载
-            /// </summary>
-            OnLoading,
-
-            /// <summary>
-            /// 登录中
-            /// </summary>
-            OnLogining,
-
-            /// <summary>
-            /// 处于用户模式
-            /// </summary>
-            UserMode,
-
-            /// <summary>
-            /// 处于管理员模式
-            /// </summary>
-            AdminMode,
-
-            /// <summary>
-            /// 已退出
-            /// </summary>
-            Exited,
-
-            /// <summary>
-            /// 等待
-            /// </summary>
-            Wait,
-
-            /// <summary>
-            /// 错误
-            /// </summary>
-            Error,
-        }
-
-        private readonly SystemStartConfiguration _systemStartConfiguration;
-        private ProcessState _systemProcess = ProcessState.BeforeLoding;
-        private static LibrarySystemManager? _instance;
-
-        public static ILogger Logger { get; } = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Debug().CreateLogger();
-        public static LibrarySystemManager Instance => _instance ??= CreateInstance();
+        /// <summary>
+        /// 书籍管理系统实例
+        /// </summary>
+        /// <remarks>
+        /// 在进行第一次初始化后可用
+        /// </remarks>
+        /// <exception cref="InvalidOperationException"/>
+        public static LibrarySystemManager Instance => _instance ?? throw new InvalidOperationException("书籍管理系统未初始化或已经退出");
+        private readonly ILogger _logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Debug().CreateLogger();
+        private readonly IServiceProvider _serviceProvider;
+        internal ILogger Logger => _logger;
         public IUserService UserService { get; }
         public IBookService BookService { get; }
-        private readonly IUserDataProvider _userDataProvider;
-        private readonly IBookDataProvider _bookDataProvider;
+        public IDealService DealService { get; }
 
-        private IServiceProvider ServiceProvider { get; }
-
-        public static LibrarySystemManager CreateInstance(SystemStartConfiguration? configuration = null)
+        /// <summary>
+        /// 初始化书籍管理系统
+        /// </summary>
+        /// <remarks>
+        /// 多次初始化会引发 <see cref="InvalidOperationException"/> 异常
+        /// </remarks>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static async Task<LibrarySystemManager> InitAsync(CancellationToken cancellationToken = default)
         {
-            _instance ??= new(configuration);
-            return _instance;
+            if (_instance is not null)
+                throw new InvalidOperationException("书籍管理系统已经进行了初始化，再次初始化无效");
+            _instance = new();
+            await Instance.UserService.StartLoadUserDataAsync(cancellationToken);
+            await Instance.BookService.StartLoadBookDataAsync(cancellationToken);
+            await Instance.DealService.StartLoadDealDataAsync(cancellationToken);
+            return Instance;
         }
 
-        internal LibrarySystemManager(SystemStartConfiguration? configuration = null)
+        /// <summary>
+        /// 退出书籍管理系统
+        /// </summary>
+        /// <remarks>
+        /// 在已经进入系统后可以退出
+        /// </remarks>
+        /// <exception cref="InvalidOperationException"/>
+        public static void ExitSystem()
         {
-            _instance = this;
-            _systemStartConfiguration =
-                configuration ?? new SystemStartConfiguration(new ILibrarySystemProcess.EmptyLibrarySystemProcess());
-            Logger.Information("书店管理系统 初始化");
+            Instance.Dispose();
+        }
 
-            var builder = new ServiceCollection().AddSingleton<IUserService, UserService>().AddSingleton<IBookService, BookService>();
+        internal LibrarySystemManager()
+        {
+            Logger.Information("书店管理系统开始初始化");
+            _serviceProvider = new ServiceCollection()
+                .AddSingleton<IDataProvider<UserData>, LocalDataProvider<UserData>>()
+                .AddSingleton<IDataProvider<BookData>, LocalDataProvider<BookData>>()
+                .AddSingleton<IDataProvider<BookDealData>, LocalDataProvider<BookDealData>>()
+                .AddSingleton<IDataProvider<RechargeDealData>, LocalDataProvider<RechargeDealData>>()
+                .AddSingleton<IUserService, UserService>()
+                .AddSingleton<IBookService, BookService>()
+                .AddSingleton<IDealService, DealService>()
+                .BuildServiceProvider();
 
-            if (_systemStartConfiguration.UseSQLDataSource)
+            UserService = _serviceProvider.GetRequiredService<IUserService>();
+            BookService = _serviceProvider.GetRequiredService<IBookService>();
+            DealService = _serviceProvider.GetRequiredService<IDealService>();
+        }
+
+        internal void InitOtherConfig() { }
+
+        protected override async void DisposeManagedResource()
+        {
+            try
             {
-                //builder.AddSingleton<IBookDataProvider, >();
+                await Task.WhenAll(
+                    UserService.StartSaveUserDataAsync(),
+                    BookService.StartSaveBookDataAsync(),
+                    DealService.StartSaveDealDataAsync()
+                );
             }
-            else
+            catch
             {
-                builder.AddSingleton<IBookDataProvider, LocalBookDataProvider>().AddSingleton<IUserDataProvider, LocalUserDataProvider>();
-            }
-
-            ServiceProvider = builder.BuildServiceProvider();
-
-            _userDataProvider =
-                ServiceProvider.GetService<IUserDataProvider>() ?? throw new InvalidOperationException("UserDataProvider is null");
-            _bookDataProvider =
-                ServiceProvider.GetService<IBookDataProvider>() ?? throw new InvalidOperationException("BookDataProvider is null");
-            UserService = ServiceProvider.GetService<IUserService>() ?? throw new InvalidOperationException("UserService is null");
-            BookService = ServiceProvider.GetService<IBookService>() ?? throw new InvalidOperationException("BookService is null");
-        }
-
-        public async Task StartLoadingDataAsync(IProgress<ActionResult>? progress = null, CancellationToken cancellationToken = default)
-        {
-            _systemProcess = ProcessState.OnLoading;
-            Stopwatch sw = Stopwatch.StartNew();
-            await Task.WhenAll(_userDataProvider.LoadUserDatasAsync(), _bookDataProvider.LoadBookDatasAsync());
-            await _systemStartConfiguration.LibrarySystemProcess.StartLoadingAsync();
-            sw.Stop();
-            ActionResult.Success().TryReportResult("数据加载完毕", progress, Logger);
-            Logger.Information("用时{time}Ms", sw.ElapsedMilliseconds);
-        }
-
-        public async Task StartLoginAsync(IProgress<ActionResult>? progress = null, CancellationToken cancellationToken = default)
-        {
-            _systemProcess = ProcessState.OnLogining;
-            ActionResult.Success().TryReportResult("进入登录模式", progress, Logger);
-            await _systemStartConfiguration.LibrarySystemProcess.StartLoginAsync();
-        }
-
-        public async Task TryLoginAsync(
-            string username,
-            string password,
-            IProgress<ActionResult>? progress = null,
-            CancellationToken cancellationToken = default
-        )
-        {
-            const string Admin = nameof(Admin);
-            Logger.Information("{username} {password} 尝试登录", username, password);
-
-            if (username == Admin && password == "admin")
-            {
-                ActionResult.Success().TryReportResult("管理员登录", progress, Logger);
-                _systemProcess = ProcessState.AdminMode;
-                await _systemStartConfiguration.LibrarySystemProcess.ToAdminModeAsync();
-            }
-            else
-            {
-                var result = await UserService.TryLoginAsync(username, password);
-                if (result.IsSucceed)
-                {
-                    _systemProcess = ProcessState.UserMode;
-                    result.TryReportResult("用户登录", progress, Logger);
-                    await _systemStartConfiguration.LibrarySystemProcess.ToUserModeAsync();
-                }
-                else
-                {
-                    result.TryReportResult("用户登录", progress, Logger);
-                }
+                throw;
             }
         }
 
-        public async Task TryExitLoginAsync(IProgress<ActionResult>? progress = null, CancellationToken cancellationToken = default)
-        {
-            switch (_systemProcess)
-            {
-                case ProcessState.AdminMode:
-                    _systemProcess = ProcessState.Wait;
-                    await _systemStartConfiguration.LibrarySystemProcess.ExitAdminModeAsync();
-                    ActionResult.Success().TryReportResult("退出管理员模式", progress, Logger);
-                    break;
-                case ProcessState.UserMode:
-                    _systemProcess = ProcessState.Wait;
-                    await _systemStartConfiguration.LibrarySystemProcess.ExitUserModeAsync();
-                    ActionResult.Success().TryReportResult("退出用户模式", progress, Logger);
-                    break;
-                default:
-                    ActionResult.Warning("并未处于登录状态").TryReportResult("尝试退出登录失败", progress, Logger);
-                    break;
-            }
-        }
+        protected override void DisposeUnmanagedResource() { }
 
-        public async Task CloseAsync()
+        protected override void OnDisposed()
         {
-            if (_systemProcess == ProcessState.UserMode)
-            {
-                await _systemStartConfiguration.LibrarySystemProcess.ExitUserModeAsync();
-            }
-            if (_systemProcess == ProcessState.AdminMode)
-            {
-                await _systemStartConfiguration.LibrarySystemProcess.ExitAdminModeAsync();
-            }
-            ActionResult.Success().TryReportResult("退出系统", null, Logger);
-            await Task.WhenAll(
-                _userDataProvider.SaveUserDatasAsync(),
-                _bookDataProvider.SaveBookDatasAsync(),
-                _systemStartConfiguration.LibrarySystemProcess.ExitSystemAsync()
-            );
-            _systemProcess = ProcessState.Exited;
-        }
-
-        ~LibrarySystemManager()
-        {
-            Logger.Information("{name} 退出", nameof(LibrarySystemManager));
+            Logger.Information("书店管理系统退出");
         }
     }
 }

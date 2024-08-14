@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -14,7 +15,20 @@ using 书店管理系统.Core.Others.MessagePackFormatters;
 
 namespace 书店管理系统.Core.Structs
 {
-    [MessagePackObject]
+    public interface IReadOnlyBookData : INotifyPropertyChanged
+    {
+        long ISBN { get; }
+        string BookName { get; }
+        string Author { get; }
+        string Publisher { get; }
+        DateTime PublicationDate { get; }
+        string[] Category { get; }
+        string Description { get; }
+        decimal Price { get; }
+        int Amount { get; }
+    }
+
+    [MessagePackObject(keyAsPropertyName: true)]
     public sealed partial class BookData(
         long ISBN,
         string bookName,
@@ -25,11 +39,11 @@ namespace 书店管理系统.Core.Structs
         string description,
         decimal price,
         int amount
-    ) : DataBaseModel
+    ) : DataBaseModel, IReadOnlyBookData
     {
         [IgnoreDataMember]
         [AdaptIgnore]
-        public bool IsBookDataValid =>
+        public bool IsValid =>
             ISBN != 0
             && !string.IsNullOrEmpty(BookName)
             && !string.IsNullOrEmpty(Author)
@@ -41,50 +55,41 @@ namespace 书店管理系统.Core.Structs
             : this(0, string.Empty, string.Empty, string.Empty, default, [], string.Empty, 0, 0) { }
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
-        [property: Key(0)]
+        [NotifyPropertyChangedFor(nameof(IsValid))]
         private long _ISBN = ISBN;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
-        [property: Key(1)]
+        [NotifyPropertyChangedFor(nameof(IsValid))]
         private string _bookName = bookName;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
-        [property: Key(2)]
+        [NotifyPropertyChangedFor(nameof(IsValid))]
         private string _author = author;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
-        [property: Key(3)]
+        [NotifyPropertyChangedFor(nameof(IsValid))]
         private string _publisher = publisher;
 
         [ObservableProperty]
-        [property: Key(4)]
         private DateTime _publicationDate = publicationDate;
 
         [ObservableProperty]
-        [property: Key(5)]
         private string[] _category = category;
 
         [ObservableProperty]
-        [property: Key(6)]
         private string _description = description;
 
-        // TODO 存在严重的数据转换问题，暂时无法解决
+        // TODO 存在严重的数据转换问题，解决方法使用TypeAdapterConfig
         //[ObservableProperty]
         //[property: Key(7), MessagePackFormatter(typeof(CultureInfoFormatter))]
         //private CultureInfo _language = language;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
-        [property: Key(7)]
+        [NotifyPropertyChangedFor(nameof(IsValid))]
         private decimal _price = price;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsBookDataValid))]
-        [property: Key(8)]
+        [NotifyPropertyChangedFor(nameof(IsValid))]
         private int _amount = amount;
     }
 }

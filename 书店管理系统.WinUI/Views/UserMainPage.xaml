@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" ?>
+<Page
+    x:Class="书店管理系统.WinUI.Views.UserMainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:书店管理系统.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:书店管理系统.WinUI.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Height="108"
+            Padding="16,0,0,0"
+            Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}"
+            CornerRadius="{ThemeResource ControlCornerRadius}"
+            Orientation="Horizontal"
+            Spacing="16">
+            <Border
+                Width="84"
+                Height="84"
+                VerticalAlignment="Center"
+                Background="Gray"
+                CornerRadius="100">
+                <FontIcon FontSize="48" Glyph="&#xE77B;" />
+            </Border>
+            <StackPanel
+                Margin="0,16,0,0"
+                Orientation="Vertical"
+                Spacing="8">
+                <TextBlock
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Text="{x:Bind ViewModel.LoginUser.Name, Mode=OneWay}"
+                    TextLineBounds="Full" />
+                <TextBlock>
+                    <Run Text="{x:Bind ViewModel.LoginUser.Id, Mode=OneWay}" />
+                    <Run Text="{x:Bind ViewModel.LoginUser.Gender, Mode=OneWay}" />
+                    <Run Text="{x:Bind ViewModel.LoginUser.Phone, Mode=OneWay}" />
+                    <Run Text="{x:Bind ViewModel.LoginUser.Address, Mode=OneWay}" />
+                    <Run Text="{x:Bind ViewModel.LoginUser.Email, Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel
+            Margin="0,16,16,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Orientation="Vertical"
+            Spacing="16">
+
+            <TextBlock
+                HorizontalAlignment="Right"
+                Style="{ThemeResource TitleLargeTextBlockStyle}"
+                TextLineBounds="Tight">
+                <Run Text="{x:Bind ViewModel.LoginUser.Account, Mode=OneWay}" />
+                <Run Text="￥" />
+            </TextBlock>
+            <Button HorizontalAlignment="Center">
+                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="申请充值" />
+                <Button.Flyout>
+                    <Flyout x:Name="userRechargeInputFlyout" Placement="BottomEdgeAlignedRight">
+                        <StackPanel
+                            Width="240"
+                            Orientation="Vertical"
+                            Spacing="8">
+                            <controls:DecimalInputControl
+                                x:Name="rechargeDecimalInputControl"
+                                Header="输入申请充值金额"
+                                SmallChange="1" />
+                            <StackPanel
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal"
+                                Spacing="8">
+                                <Button
+                                    Command="{x:Bind ViewModel.AddRechargeRequestCommand}"
+                                    CommandParameter="{x:Bind rechargeDecimalInputControl.Decimal, Mode=OneWay}"
+                                    Content="确认"
+                                    Style="{ThemeResource AccentButtonStyle}" />
+                                <Button Click="OnCancelButtonClicked" Content="取消" />
+
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" ?>
+<Page
+    x:Class="书店管理系统.WinUI.Views.LoginAdminPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:书店管理系统.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:书店管理系统.WinUI.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid>
+
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical"
+            Spacing="16">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    MinWidth="128"
+                    VerticalAlignment="Center"
+                    Text="管理员密码"
+                    TextAlignment="Center" />
+
+                <PasswordBox MinWidth="256" Password="{x:Bind ViewModel.AdminPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:PasswordBoxKeyBehavior TargetButton="{x:Bind adminLoginButton}" />
+                    </i:Interaction.Behaviors>
+                </PasswordBox>
+            </StackPanel>
+            <InfoBar MinWidth="256" HorizontalAlignment="Center" />
+            <Button
+                x:Name="adminLoginButton"
+                HorizontalAlignment="Center"
+                Command="{x:Bind ViewModel.LoginCommand}"
+                Content="管理员登录" />
+        </StackPanel>
+        <Button
+            Margin="16,0,0,16"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Command="{x:Bind ViewModel.BackToLoginPageCommand}">
+            <FontIcon Glyph="&#xE72B;" />
+        </Button>
+    </Grid>
+</Page>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" ?>
+<ContentDialog
+    x:Class="书店管理系统.WinUI.Controls.ContentDialogs.EditBookDataContenDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:书店管理系统.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:书店管理系统.WinUI.Controls.ContentDialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    CloseButtonText="取消修改"
+    IsPrimaryButtonEnabled="{x:Bind Model.CanEdit, Mode=OneWay}"
+    PrimaryButtonClick="OnPrimaryButtonClick"
+    PrimaryButtonText="修改"
+    mc:Ignorable="d">
+
+    <ScrollViewer MaxHeight="540">
+        <StackPanel Orientation="Vertical" Spacing="8">
+            <controls:ISBNInputControl
+                Header="ISBN"
+                ISBN="{x:Bind _ISBN}"
+                IsEnabled="False" />
+            <TextBox Header="书籍名称" Text="{x:Bind Model.NewBookName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Header="作者" Text="{x:Bind Model.NewAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Header="出版社" Text="{x:Bind Model.NewPublisher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <DatePicker Date="{x:Bind Model.NewPublicationDate, Mode=TwoWay}" Header="出版日期" />
+            <TextBox
+                Height="108"
+                AcceptsReturn="True"
+                Header="书籍简介/描述"
+                Text="{x:Bind Model.NewDescription, Mode=TwoWay}"
+                TextWrapping="Wrap" />
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>

@@ -14,7 +14,7 @@ namespace 书店管理系统.Core.Structs
     public interface IReadOnlyBookDealData : INotifyPropertyChanged
     {
         int Id { get; }
-        DateTime DealTime { get; }
+        DateTimeOffset DealTime { get; }
         int Uid { get; }
         long ISBN { get; }
         decimal Price { get; }
@@ -22,7 +22,7 @@ namespace 书店管理系统.Core.Structs
     }
 
     [MessagePackObject(keyAsPropertyName: true)]
-    public sealed partial class BookDealData(int id, DateTime dealTime, int uid, long ISBN, decimal price, int amount)
+    public sealed partial class BookDealData(int id, DateTimeOffset dealTime, int uid, long ISBN, decimal price, int amount)
         : DataBaseModel,
             IReadOnlyBookDealData
     {
@@ -38,7 +38,7 @@ namespace 书店管理系统.Core.Structs
         private int _id = id;
 
         [ObservableProperty]
-        private DateTime _dealTime = dealTime;
+        private DateTimeOffset _dealTime = dealTime;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsValid))]

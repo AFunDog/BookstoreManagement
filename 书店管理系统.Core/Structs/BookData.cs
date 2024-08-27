@@ -21,7 +21,7 @@ namespace 书店管理系统.Core.Structs
         string BookName { get; }
         string Author { get; }
         string Publisher { get; }
-        DateTime PublicationDate { get; }
+        DateTimeOffset PublicationDate { get; }
         string[] Category { get; }
         string Description { get; }
         decimal Price { get; }
@@ -34,7 +34,7 @@ namespace 书店管理系统.Core.Structs
         string bookName,
         string author,
         string publisher,
-        DateTime publicationDate,
+        DateTimeOffset publicationDate,
         string[] category,
         string description,
         decimal price,
@@ -71,7 +71,7 @@ namespace 书店管理系统.Core.Structs
         private string _publisher = publisher;
 
         [ObservableProperty]
-        private DateTime _publicationDate = publicationDate;
+        private DateTimeOffset _publicationDate = publicationDate;
 
         [ObservableProperty]
         private string[] _category = category;

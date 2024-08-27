@@ -44,14 +44,14 @@ namespace 书店管理系统.Core.Contracts
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task StartLoadDealDataAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> StartLoadDealDataAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 开始保存交易数据任务
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task StartSaveDealDataAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> StartSaveDealDataAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 添加新的书籍交易信息
@@ -65,7 +65,13 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="amount">交易书籍数量</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        internal Task AddNewBookDealAsync(int uid, long ISBN, decimal price, int amount, CancellationToken cancellationToken = default);
+        internal Task<ActionResult> AddNewBookDealAsync(
+            int uid,
+            long ISBN,
+            decimal price,
+            int amount,
+            CancellationToken cancellationToken = default
+        );
 
         /// <summary>
         /// 删除指定的书籍交易信息
@@ -76,7 +82,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="id">书籍交易信息Id</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task RemoveBookDealAsync(int id, CancellationToken cancellationToken = default);
+        Task<ActionResult> RemoveBookDealAsync(int id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 添加新的充值交易信息
@@ -89,7 +95,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="addMoney">充值金额</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task AddNewRechargeDealAsync(int uid, decimal addMoney, CancellationToken cancellationToken = default);
+        Task<ActionResult> AddNewRechargeDealAsync(int uid, decimal addMoney, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 批准通过充值交易
@@ -100,7 +106,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="id">充值交易信息Id</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task PassRechargeDealAsync(int id, CancellationToken cancellationToken = default);
+        Task<ActionResult> PassRechargeDealAsync(int id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 删除指定的充值交易信息
@@ -111,6 +117,6 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="id">充值交易信息Id</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task RemoveRechargeDealAsync(int id, CancellationToken cancellationToken = default);
+        Task<ActionResult> RemoveRechargeDealAsync(int id, CancellationToken cancellationToken = default);
     }
 }

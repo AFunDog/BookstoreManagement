@@ -44,14 +44,14 @@ namespace 书店管理系统.Core.Contracts
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task StartLoadUserDataAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> StartLoadUserDataAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 开始保存用户数据任务
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task StartSaveUserDataAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> StartSaveUserDataAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 以用户身份登录
@@ -60,7 +60,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="password">用户密码</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task LoginAsUserAsync(string userName, string password, CancellationToken cancellationToken = default);
+        Task<ActionResult> LoginAsUserAsync(string userName, string password, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 以管理员身份登录
@@ -68,14 +68,14 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="password">管理员密码</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task LoginAsAdminAsync(string password, CancellationToken cancellationToken = default);
+        Task<ActionResult> LoginAsAdminAsync(string password, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 退出登录
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task LogoutAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> LogoutAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 注册新用户
@@ -88,7 +88,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="email">邮箱</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task RegisterUserAsync(
+        Task<ActionResult> RegisterUserAsync(
             string name,
             string password,
             Gender gender = Gender.Unknown,
@@ -107,7 +107,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="id">用户Id</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task RemoveUserAsync(int id, CancellationToken cancellationToken = default);
+        Task<ActionResult> RemoveUserAsync(int id, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 修改用户的基本信息
@@ -132,7 +132,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="newEmail">新邮箱</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task EditUserBasicDataAsync(
+        Task<ActionResult> EditUserBasicDataAsync(
             int id,
             string? newName = null,
             string? newpassword = null,

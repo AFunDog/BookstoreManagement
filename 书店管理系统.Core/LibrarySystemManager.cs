@@ -31,9 +31,9 @@ namespace 书店管理系统.Core
         /// </remarks>
         /// <exception cref="InvalidOperationException"/>
         public static LibrarySystemManager Instance => _instance ?? throw new InvalidOperationException("书籍管理系统未初始化或已经退出");
-        private readonly ILogger _logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Debug().CreateLogger();
         private readonly IServiceProvider _serviceProvider;
-        internal ILogger Logger => _logger;
+        internal static ILogger Logger { get; private set; } =
+            new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Debug().CreateLogger();
         public IUserService UserService { get; }
         public IBookService BookService { get; }
         public IDealService DealService { get; }
@@ -42,20 +42,36 @@ namespace 书店管理系统.Core
         /// 初始化书籍管理系统
         /// </summary>
         /// <remarks>
-        /// 多次初始化会引发 <see cref="InvalidOperationException"/> 异常
+        /// 不允许多次初始化
         /// </remarks>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        public static async Task<LibrarySystemManager> InitAsync(CancellationToken cancellationToken = default)
+        public static async Task<ActionResult> InitAsync(
+            IProgress<LoadingProgress>? progress = null,
+            ILogger? logger = null,
+            CancellationToken cancellationToken = default
+        )
         {
             if (_instance is not null)
-                throw new InvalidOperationException("书籍管理系统已经进行了初始化，再次初始化无效");
+                return ActionResult.Error("书籍管理系统已经进行了初始化，再次初始化无效").Log();
+
+            if (logger is not null)
+                Logger = logger;
+
+            Stopwatch sw = Stopwatch.StartNew();
+
+            progress?.Report(new(0, "开始初始化"));
             _instance = new();
+            progress?.Report(new(25, "正在加载加载用户数据"));
             await Instance.UserService.StartLoadUserDataAsync(cancellationToken);
+            progress?.Report(new(75, "正在加载加载书籍数据"));
             await Instance.BookService.StartLoadBookDataAsync(cancellationToken);
+            progress?.Report(new(75, "正在加载加载交易数据"));
             await Instance.DealService.StartLoadDealDataAsync(cancellationToken);
-            return Instance;
+            progress?.Report(new(100, "初始化完成"));
+
+            sw.Stop();
+            return ActionResult.Success($"书店管理系统初始化完毕 用时 {sw.ElapsedMilliseconds} ms").Log();
         }
 
         /// <summary>
@@ -64,10 +80,16 @@ namespace 书店管理系统.Core
         /// <remarks>
         /// 在已经进入系统后可以退出
         /// </remarks>
-        /// <exception cref="InvalidOperationException"/>
         public static void ExitSystem()
         {
-            Instance.Dispose();
+            try
+            {
+                Instance.Dispose();
+            }
+            catch (InvalidOperationException e)
+            {
+                Logger.Error(e, "书店管理系统未初始化或已经退出");
+            }
         }
 
         internal LibrarySystemManager()
@@ -92,18 +114,11 @@ namespace 书店管理系统.Core
 
         protected override async void DisposeManagedResource()
         {
-            try
-            {
-                await Task.WhenAll(
-                    UserService.StartSaveUserDataAsync(),
-                    BookService.StartSaveBookDataAsync(),
-                    DealService.StartSaveDealDataAsync()
-                );
-            }
-            catch
-            {
-                throw;
-            }
+            await Task.WhenAll(
+                UserService.StartSaveUserDataAsync(),
+                BookService.StartSaveBookDataAsync(),
+                DealService.StartSaveDealDataAsync()
+            );
         }
 
         protected override void DisposeUnmanagedResource() { }

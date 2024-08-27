@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -13,66 +11,77 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Serilog;
-using Vanara.Extensions.Reflection;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using 书店管理系统.Core.Contracts;
+using 书店管理系统.Core;
 using 书店管理系统.Core.Structs;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace 书店管理系统.Controls.ContentDialogs
+namespace 书店管理系统.WinUI.Controls.ContentDialogs
 {
-    public sealed partial class EditUserDataContentDialog : ContentDialog, INotifyPropertyChanged
+    sealed partial class EditUserDataContentDialogModel(UserData orginalData) : ObservableObject
     {
-        public enum EditModeType
-        {
-            Edit,
-            Register,
-            //View
-        }
+        internal bool CanEdit => !string.IsNullOrEmpty(NewName) && !string.IsNullOrEmpty(NewPassword) && !WaitForCommand;
 
-        private double Increment => 0.01;
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public EditModeType EditMode { get; set; } = EditModeType.Register;
-        public UserData UserData { get; set; } =
-            new(-1, string.Empty, string.Empty, Gender.Male, string.Empty, string.Empty, string.Empty, DateTime.Now, DateTime.Now, 0);
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(CanEdit))]
+        private string _newName = orginalData.Name;
 
-        public EditUserDataContentDialog()
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(CanEdit))]
+        private string _newPassword = orginalData.Password;
+
+        [ObservableProperty]
+        private Gender _newGender = orginalData.Gender;
+
+        [ObservableProperty]
+        private string _newPhone = orginalData.Phone;
+
+        [ObservableProperty]
+        private string _newAddress = orginalData.Address;
+
+        [ObservableProperty]
+        private string _newEmail = orginalData.Email;
+
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(CanEdit))]
+        private bool _waitForCommand = false;
+    }
+
+    public sealed partial class EditUserDataContentDialog : ContentDialog
+    {
+        private readonly int _id;
+        EditUserDataContentDialogModel Model { get; }
+
+        public EditUserDataContentDialog(UserData orginalData)
         {
+            _id = orginalData.Id;
+            Model = new(orginalData);
             this.InitializeComponent();
         }
 
-        public EditUserDataContentDialog SetEditMode(UserData target)
+        private void OnPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            UserData = target;
-            EditMode = EditModeType.Edit;
-            Title = "更新用户";
-            PropertyChanged?.Invoke(this, new(nameof(UserData)));
-            return this;
-        }
+            Model.WaitForCommand = true;
 
-        private bool Non(bool? value) => !value ?? false;
+            if (
+                LibrarySystemManager
+                    .Instance.UserService.EditUserBasicDataAsync(
+                        _id,
+                        Model.NewName,
+                        Model.NewPassword,
+                        Model.NewGender,
+                        Model.NewPhone,
+                        Model.NewAddress,
+                        Model.NewEmail
+                    )
+                    .Result.IsSucceed
+            ) { }
+            else
+            {
+                args.Cancel = true;
+            }
 
-        private void OnRandomCheckBoxChecked(object sender, RoutedEventArgs e)
-        {
-            Span<char> chars = stackalloc char[26 * 2 + 10];
-            int i = 0;
-            for (int ptr = 0; ptr < 26; ptr++)
-            {
-                chars[i] = (char)('A' + ptr);
-                chars[i + 1] = (char)('a' + ptr);
-                i += 2;
-            }
-            for (int ptr = 0; ptr < 10; ptr++)
-            {
-                chars[i++] = (char)('0' + ptr);
-            }
-            Random random = new((int)DateTime.Now.Ticks);
-            UserData.Password = new string(random.GetItems<char>(chars, 8));
-            Log.Debug("生成的用户密码 {Password}", UserData.Password);
+            Model.WaitForCommand = false;
         }
     }
 }

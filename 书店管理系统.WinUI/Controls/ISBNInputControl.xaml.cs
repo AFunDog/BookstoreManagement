@@ -22,7 +22,7 @@ using Windows.Foundation.Collections;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace 书店管理系统.Controls
+namespace 书店管理系统.WinUI.Controls
 {
     public sealed partial class ISBNInputControl : UserControl, INotifyPropertyChanged
     {
@@ -39,7 +39,7 @@ namespace 书店管理系统.Controls
             set
             {
                 SetValue(ISBNProperty, value);
-                Log.Debug("ISBN : {isbn} {pos}", ISBN, CursorPosition);
+                App.Logger.Debug("ISBN : {isbn} {pos}", ISBN, CursorPosition);
             }
         }
         public string Header
@@ -71,7 +71,7 @@ namespace 书店管理系统.Controls
                         App.Instance.Resources["AccentTextFillColorPrimaryBrush"] as Brush;
                 }
 
-                Log.Debug("CursorPosition : {pos}", _cursorPosition);
+                App.Logger.Debug("CursorPosition : {pos}", _cursorPosition);
             }
         }
         const int ISBNLength = 13;
@@ -125,7 +125,7 @@ namespace 书店管理系统.Controls
 
         private void OnISBNPanelKeyDown(object sender, KeyRoutedEventArgs e)
         {
-            Log.Debug("KeyDown {key} {pos}", e.Key, CursorPosition);
+            App.Logger.Debug("KeyDown {key} {pos}", e.Key, CursorPosition);
 
             if (e.Key is >= VirtualKey.Number0 and <= VirtualKey.Number9 && CursorPosition < ISBNLength - 1)
             {
@@ -146,12 +146,12 @@ namespace 书店管理系统.Controls
 
         private void OnISBNItemPointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Log.Debug("OnISBNItemPointerPressed index : {index}", ((FrameworkElement)sender).DataContext);
+            App.Logger.Debug("OnISBNItemPointerPressed index : {index}", ((FrameworkElement)sender).DataContext);
         }
 
         private void OnISBNPanelPointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Log.Debug("ISBN rootPanel TryFocus {res}", rootPanel.Focus(FocusState.Programmatic));
+            App.Logger.Debug("ISBN rootPanel TryFocus {res}", rootPanel.Focus(FocusState.Programmatic));
         }
     }
 }

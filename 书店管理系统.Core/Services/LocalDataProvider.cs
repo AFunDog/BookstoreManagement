@@ -41,7 +41,7 @@ namespace 书店管理系统.Core.Services
                 }
                 catch (Exception e)
                 {
-                    LibrarySystemManager.Instance.Logger.Debug(e, "读取数据异常");
+                    LibrarySystemManager.Logger.Warning(e, "读取数据异常");
                     _datas = [];
                 }
             }
@@ -118,7 +118,7 @@ namespace 书店管理系统.Core.Services
             }
             catch (Exception e)
             {
-                LibrarySystemManager.Instance.Logger.Debug(e, "保存用户数据异常");
+                LibrarySystemManager.Logger.Error(e, "保存用户数据异常");
             }
         }
 

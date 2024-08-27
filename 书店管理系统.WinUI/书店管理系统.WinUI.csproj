@@ -23,13 +23,23 @@
 	  <Page Remove="Controls\ContentDialog\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Remove="Controls\BookInfoShowCard.xaml" />
-	  <None Remove="Controls\ContentDialogs\AffirmRemoveBookContentDialog.xaml" />
-	  <None Remove="Controls\ContentDialogs\AffirmRemoveUserContentDialog.xaml" />
-	  <None Remove="Controls\ContentDialogs\EditBookDataContentDialog.xaml" />
+	  <None Remove="Controls\BookBuyCard.xaml" />
+	  <None Remove="Controls\ContentDialogs\AddBookContentDialog.xaml" />
+	  <None Remove="Controls\ContentDialogs\EditBookDataContenDialog.xaml" />
+	  <None Remove="Controls\ContentDialogs\EditUserDataContentDialog.xaml" />
+	  <None Remove="Controls\ContentDialogs\RegisterUserContentDialog.xaml" />
+	  <None Remove="Controls\DecimalInputControl.xaml" />
 	  <None Remove="Controls\ISBNInputControl.xaml" />
 	  <None Remove="Controls\RegisterUserContentDialog.xaml" />
 	  <None Remove="Controls\UserInfoBorder.xaml" />
+	  <None Remove="MainWindow.xaml" />
+	  <None Remove="StartWindow.xaml" />
+	  <None Remove="Views\AdminMainPage.xaml" />
+	  <None Remove="Views\LoadingPage.xaml" />
+	  <None Remove="Views\LoginAdminPage.xaml" />
+	  <None Remove="Views\LoginUserPage.xaml" />
+	  <None Remove="Views\UserBuyBookPage.xaml" />
+	  <None Remove="Views\UserMainPage.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,6 +47,7 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.0.240109" />
+		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.0.240109" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
@@ -63,14 +74,6 @@
 	  <Folder Include="Helpers\" />
 	  <Folder Include="Services\" />
 	  <Folder Include="Structs\" />
-	  <Folder Include="ViewModels\" />
-	  <Folder Include="Views\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Controls\ContentDialogs\AffirmRemoveBookContentDialog.xaml">
-	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-	    <SubType>Designer</SubType>
-	  </Page>
 	</ItemGroup>
 
 	<!--
@@ -101,24 +104,78 @@
 	  <PRIResource Remove="Controls\ContentDialog\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Page Update="Controls\BookBuyCard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
 	  <Page Update="Controls\ISBNInputControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
 	<ItemGroup>
-	  <Page Update="Controls\ContentDialogs\EditBookDataContentDialog.xaml">
+	  <Page Update="Views\UserBuyBookPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
 	<ItemGroup>
-	  <Page Update="Controls\ContentDialogs\AffirmRemoveUserContentDialog.xaml">
+	  <Page Update="Controls\DecimalInputControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
 	<ItemGroup>
-	  <CustomAdditionalCompileInputs Remove="Controls\BookInfoShowCard.xaml" />
+	  <Page Update="Controls\ContentDialogs\EditBookDataContenDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	<ItemGroup>
-	  <Resource Remove="Controls\BookInfoShowCard.xaml" />
+	  <Page Update="Controls\ContentDialogs\AddBookContentDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Controls\ContentDialogs\EditUserDataContentDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Controls\ContentDialogs\RegisterUserContentDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\UserMainPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\AdminMainPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\LoginAdminPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\LoginUserPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\LoadingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="MainWindow.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="StartWindow.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 </Project>

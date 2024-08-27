@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" ?>
+<Page
+    x:Class="书店管理系统.WinUI.Views.LoadingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:书店管理系统.WinUI.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical"
+            Spacing="8">
+            <ProgressBar
+                Width="320"
+                Maximum="100"
+                Value="{x:Bind LoadingProgress, Mode=OneWay}" />
+            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind LoadingMessage, Mode=OneWay}" />
+        </StackPanel>
+    </Grid>
+</Page>

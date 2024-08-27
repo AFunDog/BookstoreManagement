@@ -16,11 +16,22 @@ using Windows.Foundation.Collections;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace 书店管理系统.Controls.ContentDialogs
+namespace 书店管理系统.WinUI.Controls
 {
-    public sealed partial class AffirmRemoveBookContentDialog : ContentDialog
+    public sealed partial class DecimalInputControl : NumberBox
     {
-        public AffirmRemoveBookContentDialog()
+        public static DependencyProperty DecimalProperty { get; } =
+            DependencyProperty.Register(nameof(Decimal), typeof(decimal), typeof(DecimalInputControl), new PropertyMetadata(0m));
+
+        public decimal Decimal
+        {
+            get => (decimal)GetValue(DecimalProperty);
+            set => SetValue(DecimalProperty, value);
+        }
+
+        private double Increment => 0.01;
+
+        public DecimalInputControl()
         {
             this.InitializeComponent();
         }

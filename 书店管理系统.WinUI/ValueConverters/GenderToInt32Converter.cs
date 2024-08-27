@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Data;
+using 书店管理系统.Core.Structs;
 
-namespace 书店管理系统.ValueConverters
+namespace 书店管理系统.WinUI.ValueConverters
 {
-    internal sealed class DoubleDecimalConverter : IValueConverter
+    internal sealed class GenderToInt32Converter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return decimal.ToDouble((decimal)value);
+            return (int)value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            return decimal.TryParse(value.ToString(), out var result) ? result : 0;
+            return (Gender)value;
         }
     }
 }

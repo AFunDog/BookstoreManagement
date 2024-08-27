@@ -31,8 +31,8 @@ namespace 书店管理系统.Core.Structs
         public string Phone { get; }
         public string Address { get; }
         public string Email { get; }
-        public DateTime CreateTime { get; }
-        public DateTime UpdateTime { get; }
+        public DateTimeOffset CreateTime { get; }
+        public DateTimeOffset UpdateTime { get; }
         public decimal Account { get; }
     }
 
@@ -45,8 +45,8 @@ namespace 书店管理系统.Core.Structs
         string phone,
         string address,
         string email,
-        DateTime createTime,
-        DateTime updateTime,
+        DateTimeOffset createTime,
+        DateTimeOffset updateTime,
         decimal account
     ) : DataBaseModel, IReadOnlyUserData
     {
@@ -89,11 +89,11 @@ namespace 书店管理系统.Core.Structs
 
         [ObservableProperty]
         [property: Key(7)]
-        private DateTime _createTime = createTime;
+        private DateTimeOffset _createTime = createTime;
 
         [ObservableProperty]
         [property: Key(8)]
-        private DateTime _updateTime = updateTime;
+        private DateTimeOffset _updateTime = updateTime;
 
         [ObservableProperty]
         [property: Key(9)]

@@ -30,6 +30,7 @@ namespace 书店管理系统.Behaviors
             if (
                 e.Key == global::Windows.System.VirtualKey.Enter
                 && !string.IsNullOrEmpty(AssociatedObject.Password)
+                && TargetButton.Command is not null
                 && TargetButton.Command.CanExecute(null)
             )
             {

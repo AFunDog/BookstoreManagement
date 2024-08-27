@@ -13,8 +13,8 @@ namespace 书店管理系统.Core.Structs
     public interface IReadOnlyRechargeDealData
     {
         int Id { get; }
-        DateTime DealCreateTime { get; }
-        DateTime DealPassTime { get; }
+        DateTimeOffset DealCreateTime { get; }
+        DateTimeOffset DealPassTime { get; }
         int Uid { get; }
         decimal AddMoney { get; }
         bool IsPass { get; }
@@ -23,8 +23,8 @@ namespace 书店管理系统.Core.Structs
     [MessagePackObject(keyAsPropertyName: true)]
     public sealed partial class RechargeDealData(
         int id,
-        DateTime dealCreateTime,
-        DateTime dealPassTime,
+        DateTimeOffset dealCreateTime,
+        DateTimeOffset dealPassTime,
         int uid,
         decimal addMoney,
         bool isPass
@@ -42,10 +42,10 @@ namespace 书店管理系统.Core.Structs
         private int _id = id;
 
         [ObservableProperty]
-        private DateTime _dealCreateTime = dealCreateTime;
+        private DateTimeOffset _dealCreateTime = dealCreateTime;
 
         [ObservableProperty]
-        private DateTime _dealPassTime = dealPassTime;
+        private DateTimeOffset _dealPassTime = dealPassTime;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsValid))]

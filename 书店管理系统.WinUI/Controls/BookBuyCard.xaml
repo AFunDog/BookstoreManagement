@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" ?>
+<UserControl
+    x:Class="书店管理系统.WinUI.Controls.BookBuyCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:书店管理系统.WinUI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        Width="160"
+        Height="240"
+        Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}"
+        CornerRadius="{ThemeResource ControlCornerRadius}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollView
+            Margin="8"
+            HorizontalScrollBarVisibility="Hidden"
+            HorizontalScrollMode="Disabled"
+            VerticalScrollBarVisibility="Auto"
+            VerticalScrollMode="Auto"
+            ZoomMode="Disabled">
+            <StackPanel>
+                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind Model.BookData.BookName, Mode=OneWay}" />
+                <TextBlock Text="{x:Bind Model.BookData.ISBN, Mode=OneWay}" />
+                <TextBlock Text="{x:Bind Model.BookData.Author, Mode=OneWay}" />
+                <TextBlock Text="{x:Bind Model.BookData.Publisher, Mode=OneWay}" />
+                <TextBlock Text="{x:Bind Model.BookData.PublicationDate, Mode=OneWay}" />
+                <TextBlock Text="{x:Bind Model.BookData.Category, Mode=OneWay}" />
+                <TextBlock Text="{x:Bind Model.BookData.Description, Mode=OneWay}" />
+                <TextBlock Text="{x:Bind Model.BookData.Amount, Mode=OneWay}" />
+            </StackPanel>
+        </ScrollView>
+        <Grid
+            Grid.Row="1"
+            Margin="8"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}">
+                <Run Text="{x:Bind Model.BookData.Price, Mode=OneWay}" />
+                <Run Text="￥" />
+            </TextBlock>
+            <Button
+                Grid.Column="1"
+                Content="购买"
+                Style="{ThemeResource AccentButtonStyle}">
+                <Button.Flyout>
+                    <Flyout x:Name="buyCountInputFlyout">
+                        <StackPanel
+                            Width="240"
+                            Orientation="Vertical"
+                            Spacing="8">
+                            <NumberBox
+                                Header="输入购买数量"
+                                Minimum="1"
+                                SmallChange="1"
+                                SpinButtonPlacementMode="Inline"
+                                Value="{x:Bind Model.Count, Mode=TwoWay}" />
+                            <StackPanel
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal"
+                                Spacing="8">
+                                <Button
+                                    Command="{x:Bind Model.BuyCommand}"
+                                    Content="确认"
+                                    Style="{ThemeResource AccentButtonStyle}" />
+                                <Button Click="OnCancelButtonClicked" Content="取消" />
+
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>

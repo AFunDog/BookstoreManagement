@@ -22,14 +22,14 @@ namespace 书店管理系统.Core.Contracts
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task StartLoadBookDataAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> StartLoadBookDataAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 开始保存书籍数据任务
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task StartSaveBookDataAsync(CancellationToken cancellationToken = default);
+        Task<ActionResult> StartSaveBookDataAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 上架新书籍
@@ -40,7 +40,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="bookData">新书籍信息</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task AddBookAsync(BookData bookData, CancellationToken cancellationToken = default);
+        Task<ActionResult> AddBookAsync(BookData bookData, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 下架书籍
@@ -51,7 +51,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="ISBN">书籍的ISBN</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task RemoveBookAsync(long ISBN, CancellationToken cancellationToken = default);
+        Task<ActionResult> RemoveBookAsync(long ISBN, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 修改书籍的基本信息
@@ -68,12 +68,12 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="newDescription">新书籍描述</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task EditBookDataAsync(
+        Task<ActionResult> EditBookDataAsync(
             long ISBN,
             string? newBookName = null,
             string? newAuthor = null,
             string? newPublisher = null,
-            DateTime? newPublicationDate = null,
+            DateTimeOffset? newPublicationDate = null,
             string[]? newCategory = null,
             string? newDescription = null,
             CancellationToken cancellationToken = default
@@ -89,7 +89,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="newPrice">新书籍价格</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task ChangeBookPriceAsync(long ISBN, decimal newPrice, CancellationToken cancellationToken = default);
+        Task<ActionResult> ChangeBookPriceAsync(long ISBN, decimal newPrice, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 购买书籍
@@ -98,7 +98,7 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="count">购买数量</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task BuyBookAsync(long ISBN, int count, CancellationToken cancellationToken = default);
+        Task<ActionResult> BuyBookAsync(long ISBN, int count, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 补充书籍数量
@@ -110,6 +110,6 @@ namespace 书店管理系统.Core.Contracts
         /// <param name="count">补充数量。若为负数则为下架指定书籍数量</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task SupplyBookAsync(long ISBN, int count, CancellationToken cancellationToken = default);
+        Task<ActionResult> SupplyBookAsync(long ISBN, int count, CancellationToken cancellationToken = default);
     }
 }

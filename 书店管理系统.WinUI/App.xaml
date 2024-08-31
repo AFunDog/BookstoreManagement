@@ -14,8 +14,8 @@
                 <!--  Other merged dictionaries here  -->
             </ResourceDictionary.MergedDictionaries>
             <!--  Other app resources here  -->
-            
-            
+
+
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <vconverters:GenderToInt32Converter x:Key="GenderToInt32Converter" />
             <vconverters:DecimalToDoubleConverter x:Key="DecimalToDoubleConverter" />

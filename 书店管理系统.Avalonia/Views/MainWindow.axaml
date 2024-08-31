@@ -1,0 +1,51 @@
+<Window
+    x:Class="书店管理系统.Avalonia.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:书店管理系统.Avalonia.ViewModels"
+    Title="书店管理系统.Avalonia"
+    Width="800"
+    Height="450" 
+    x:DataType="vm:MainWindowViewModel"
+    Background="Transparent"
+    ExtendClientAreaChromeHints="Default"
+    ExtendClientAreaToDecorationsHint="True"
+    Icon="/Assets/avalonia-logo.ico"
+    PointerPressed="Window_PointerPressed"
+    TransparencyLevelHint="AcrylicBlur"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <!--
+            This only sets the DataContext for the previewer in an IDE,
+            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
+        -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <ContentPresenter>
+        <ContentPresenter.Background>
+            <SolidColorBrush Opacity="0.6" Color="#000000" />
+        </ContentPresenter.Background>
+        <ContentPresenter.Content>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Source="/Assets/LoadingPic.png" Stretch="UniformToFill" />
+                <Grid Grid.Column="1">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="8">
+                        <TextBox MinWidth="192" />
+                        <TextBox />
+
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </ContentPresenter.Content>
+    </ContentPresenter>
+
+</Window>

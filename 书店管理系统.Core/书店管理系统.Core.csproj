@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,9 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CoreServices\CoreLibrary.Core\CoreLibrary.Core.csproj" />
-    <ProjectReference Include="..\..\CoreServices\CoreLibrary.Toolkit\CoreLibrary.Toolkit.csproj" />
-    <ProjectReference Include="..\..\CoreServices\CoreServices\CoreServices.csproj" />
+    <ProjectReference Include="..\..\CoreLibrary\CoreLibrary.Toolkit\CoreLibrary.Toolkit.csproj" />
   </ItemGroup>
 
 </Project>

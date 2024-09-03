@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoreLibrary.Core.Structs;
 using 书店管理系统.Core.Structs;
 
 namespace 书店管理系统.Core.Contracts

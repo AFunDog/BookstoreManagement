@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CoreLibrary.Core.BasicObjects;
+using CoreLibrary.Core.Structs;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.Threading;
 using Serilog;
 using 书店管理系统.Core.Contracts;
+using 书店管理系统.Core.Extensions;
 using 书店管理系统.Core.Services;
 using 书店管理系统.Core.Structs;
 

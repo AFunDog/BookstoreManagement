@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CoreServices.Localization;
+using CoreLibrary.Toolkit.Services.Localization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace 书店管理系统.Extensions

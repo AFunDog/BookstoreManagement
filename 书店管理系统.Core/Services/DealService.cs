@@ -5,7 +5,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using CoreLibrary.Core.Structs;
 using 书店管理系统.Core.Contracts;
+using 书店管理系统.Core.Extensions;
 using 书店管理系统.Core.Structs;
 
 namespace 书店管理系统.Core.Services

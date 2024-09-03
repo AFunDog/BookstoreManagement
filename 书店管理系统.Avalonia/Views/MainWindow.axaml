@@ -7,7 +7,7 @@
     xmlns:vm="using:书店管理系统.Avalonia.ViewModels"
     Title="书店管理系统.Avalonia"
     Width="800"
-    Height="450" 
+    Height="450"
     x:DataType="vm:MainWindowViewModel"
     Background="Transparent"
     ExtendClientAreaChromeHints="Default"
@@ -39,10 +39,29 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Spacing="8">
-                        <TextBox MinWidth="192" />
-                        <TextBox />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="64"
+                                VerticalAlignment="Center"
+                                Text="用户名" />
+                            <TextBox MinWidth="192" />
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="64"
+                                VerticalAlignment="Center"
+                                Text="密码" />
+                            <TextBox MinWidth="192" />
+
+                        </StackPanel>
 
                     </StackPanel>
+                    <Button
+                        Margin="16"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Content="管理员登录" />
                 </Grid>
             </Grid>
         </ContentPresenter.Content>

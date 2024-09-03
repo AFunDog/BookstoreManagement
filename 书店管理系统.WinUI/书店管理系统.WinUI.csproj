@@ -79,8 +79,7 @@
 		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\CoreServices\CoreServices.WinUI\CoreServices.WinUI.csproj" />
-	  <ProjectReference Include="..\..\CoreServices\CoreServices\CoreServices.csproj" />
+	  <ProjectReference Include="..\..\CoreLibrary\CoreLibrary.Toolkit.WinUI\CoreLibrary.Toolkit.WinUI.csproj" />
 	  <ProjectReference Include="..\书店管理系统.Core\书店管理系统.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>

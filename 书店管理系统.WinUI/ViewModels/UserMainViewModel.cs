@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CoreServices.WinUI.Contracts;
 using 书店管理系统.Core;
 using 书店管理系统.Core.Structs;
 

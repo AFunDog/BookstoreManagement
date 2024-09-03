@@ -30,7 +30,7 @@
                 Header="书籍简介/描述"
                 Text="{x:Bind Model.BookData.Description, Mode=TwoWay}"
                 TextWrapping="Wrap" />
-            <controls:DecimalInputControl Header="书籍价格" />
+            <controls:DecimalInputControl Decimal="{x:Bind Model.BookData.Price, Mode=TwoWay}" Header="书籍价格" />
             <NumberBox
                 Header="数量"
                 Minimum="0"
